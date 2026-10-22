@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Life Deal</title>
+<meta name="theme-color" content="#6C4DF6">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Life Deal">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%236C4DF6'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='white' font-family='Georgia' font-weight='900'%3ELD%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236C4DF6'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='white' font-family='Georgia' font-weight='900'%3ELD%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F3FB; --card: #FFFFFF; --card2: #ECE9FA; --ink: #1E1B33; --soft: #5E5A7A; --faint: #8C88A8; --line: #DDD9F0;
+    --primary: #6C4DF6; --primary-ink: #FFFFFF; --coral: #FF6B6B; --teal: #14A99A; --gold: #F5B83D; --good: #18A66B; --bad: #E5484D;
+    --health: #2DBE7E; --happy: #F5B83D; --smarts: #4C8DF6; --charm: #E85DA8;
+    --font-display: 'Fraunces', Georgia, serif; --font-body: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+    --shadow: 0 2px 0 rgba(30,27,51,0.06), 0 10px 24px -12px rgba(30,27,51,0.25);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #13112B; --card: #1F1C3E; --card2: #2A2650; --ink: #F1EEFF; --soft: #B4AFD6; --faint: #837EA8; --line: #36315F;
+      --primary: #8C73FF; --coral: #FF8585; --teal: #3CCDBE; --gold: #F7C65C; --good: #3FD08F; --bad: #FF7075;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #13112B; --card: #1F1C3E; --card2: #2A2650; --ink: #F1EEFF; --soft: #B4AFD6; --faint: #837EA8; --line: #36315F;
+    --primary: #8C73FF; --coral: #FF8585; --teal: #3CCDBE; --gold: #F7C65C; --good: #3FD08F; --bad: #FF7075;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; margin: 0; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); display: flex; justify-content: center; overscroll-behavior: none; }
+  button { font-family: var(--font-body); cursor: pointer; }
+  .app { width: 100%; max-width: 460px; height: 100vh; height: 100dvh; display: flex; flex-direction: column; position: relative; }
+  .view { display: none; flex: 1; min-height: 0; flex-direction: column; }
+  .view.active { display: flex; }
+
+  .btn { border: 2px solid transparent; border-radius: 14px; padding: 13px 16px; font-weight: 700; font-size: 15px; width: 100%; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: var(--primary-ink); box-shadow: 0 3px 0 rgba(0,0,0,0.25); }
+  .btn-primary:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+  .btn-ghost { background: var(--card); color: var(--ink); border-color: var(--line); }
+  .btn-coral { background: var(--coral); color: #2A0A0A; box-shadow: 0 3px 0 rgba(0,0,0,0.2); }
+  .btn-small { padding: 8px 12px; font-size: 13px; width: auto; border-radius: 10px; }
+
+  /* title */
+  .title-wrap { padding: 22px 18px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+  .logo { font-family: var(--font-display); font-weight: 900; font-size: 38px; line-height: 1; }
+  .logo em { color: var(--primary); font-style: italic; }
+  .tag { color: var(--soft); font-size: 15px; line-height: 1.5; margin: 0; }
+  .label { font-size: 11px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.08em; }
+  .chips { display: flex; gap: 8px; }
+  .chip { flex: 1; background: var(--card); border: 2px solid var(--line); border-radius: 14px; padding: 10px 6px; color: var(--ink); font-size: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .chip .em { font-size: 26px; }
+  .chip .ds { font-size: 10.5px; color: var(--faint); font-weight: 500; text-align: center; line-height: 1.25; }
+  .chip.sel { border-color: var(--primary); background: var(--card2); }
+  input.name { width: 100%; border: 2px solid var(--line); background: var(--card); color: var(--ink); border-radius: 14px; padding: 12px 14px; font-size: 16px; font-family: var(--font-body); }
+  .mini-stats { display: flex; gap: 8px; font-size: 12px; color: var(--soft); }
+  .mini-stats b { color: var(--ink); }
+
+  /* head */
+  .head { padding: 10px 14px 6px; display: flex; flex-direction: column; gap: 8px; }
+  .head-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .who .nm { font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .who .sb { font-size: 12px; color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nw { text-align: right; }
+  .nw .v { font-family: var(--font-display); font-weight: 900; font-size: 22px; }
+  .nw .l { font-size: 10.5px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .nw .c { font-size: 12px; color: var(--soft); }
+  .bars { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+  .bar-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--soft); }
+  .bar-row .ic { width: 16px; }
+  .bar-track { flex: 1; height: 7px; border-radius: 5px; background: var(--card2); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 5px; transition: width .5s ease; }
+  .bar-row b { width: 22px; text-align: right; color: var(--ink); font-weight: 700; }
+  .goal { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; font-size: 12px; color: var(--soft); display: none; }
+  .goal.on { display: block; }
+  .goal .gb { height: 6px; background: var(--card2); border-radius: 4px; margin-top: 5px; overflow: hidden; }
+  .goal .gf { height: 100%; background: linear-gradient(90deg, var(--gold), var(--coral)); border-radius: 4px; transition: width .5s ease; }
+  .goal b { color: var(--ink); }
+
+  /* feed */
+  .feed { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 12px 14px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; }
+  .yr { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-family: var(--font-display); font-weight: 700; font-size: 15px; }
+  .yr .a { background: var(--primary); color: var(--primary-ink); border-radius: 999px; padding: 3px 12px; font-size: 13px; }
+  .yr .w { font-size: 12px; color: var(--faint); font-family: var(--font-body); font-weight: 500; }
+  .fi { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; box-shadow: var(--shadow); animation: pop .3s ease; }
+  .fi.good { border-left: 4px solid var(--good); } .fi.bad { border-left: 4px solid var(--bad); } .fi.gold { border-left: 4px solid var(--gold); background: var(--card2); }
+  .fi b { font-weight: 700; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+  /* dock */
+  .dock { display: grid; grid-template-columns: 1fr 1fr 1.5fr 1fr 1fr; gap: 6px; padding: 8px 10px 10px; background: var(--bg); border-top: 1px solid var(--line); }
+  .dock button { background: var(--card); border: 1px solid var(--line); border-radius: 14px; color: var(--ink); font-size: 11px; font-weight: 600; padding: 7px 2px; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+  .dock button .ic { font-size: 19px; }
+  .dock button:disabled { opacity: 0.4; }
+  .dock .age { background: var(--primary); color: var(--primary-ink); border: none; font-size: 14px; font-weight: 800; box-shadow: 0 3px 0 rgba(0,0,0,0.25); }
+  .dock .age:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+  .dock .age .ic { font-size: 20px; }
+
+  /* overlays */
+  .ov { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; background: rgba(12, 9, 34, 0.6); z-index: 30; padding: 14px; }
+  .ov.on { display: flex; animation: fade .2s ease; }
+  .ov.sheet-ov { align-items: flex-end; padding: 0; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  .modal { width: 100%; max-width: 420px; background: var(--card); border-radius: 22px; padding: 20px 18px; box-shadow: var(--shadow); max-height: 92%; overflow-y: auto; animation: pop .25s ease; }
+  .modal .em { font-size: 40px; line-height: 1; }
+  .modal h2 { font-family: var(--font-display); font-size: 22px; margin: 8px 0 4px; }
+  .modal p { margin: 0 0 12px; color: var(--soft); font-size: 14.5px; line-height: 1.5; }
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice { background: var(--card2); border: 2px solid transparent; border-radius: 14px; padding: 12px 14px; text-align: left; color: var(--ink); }
+  .choice:active { border-color: var(--primary); }
+  .choice .t { font-weight: 700; font-size: 14.5px; }
+  .choice .s { font-size: 12px; color: var(--soft); margin-top: 2px; }
+  .delta { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
+  .dchip { font-size: 12.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--card2); }
+  .dchip.pos { color: var(--good); } .dchip.neg { color: var(--bad); }
+
+  .sheet { width: 100%; max-width: 460px; height: 88%; background: var(--bg); border-radius: 22px 22px 0 0; display: flex; flex-direction: column; animation: up .25s ease; }
+  @keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 6px; }
+  .sheet-head h2 { font-family: var(--font-display); font-size: 22px; margin: 0; }
+  .x { background: var(--card2); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; color: var(--ink); }
+  .sheet-body { flex: 1; overflow-y: auto; padding: 6px 14px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .seg { display: flex; gap: 6px; }
+  .seg button { flex: 1; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 2px; font-size: 12px; font-weight: 600; color: var(--soft); }
+  .seg button.sel { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; box-shadow: var(--shadow); }
+  .listing { border-left: 5px solid var(--rc, var(--line)); }
+  .l-top { display: flex; align-items: center; gap: 10px; }
+  .l-top .e { font-size: 28px; }
+  .l-top .n { flex: 1; min-width: 0; }
+  .l-name { font-weight: 700; font-size: 15px; }
+  .l-meta { font-size: 11.5px; color: var(--faint); margin-top: 1px; }
+  .l-price { font-family: var(--font-display); font-weight: 900; font-size: 19px; }
+  .l-desc { font-size: 12.5px; color: var(--soft); line-height: 1.45; margin: 8px 0; }
+  .l-actions { display: flex; gap: 8px; }
+  .badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--rc, var(--card2)); color: #fff; }
+  .tagpill { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--coral); color: #2A0A0A; margin-left: 4px; }
+  .row { display: flex; justify-content: space-between; font-size: 13.5px; padding: 4px 0; }
+  .row b { font-weight: 700; } .row .pos { color: var(--good); } .row .neg { color: var(--bad); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ach { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); font-size: 12.5px; }
+  .ach .ic { font-size: 22px; } .ach.lock { opacity: 0.45; filter: grayscale(1); } .ach .d { color: var(--soft); font-size: 11px; }
+  .note { font-size: 12.5px; color: var(--soft); line-height: 1.45; }
+
+  /* scene */
+  .scene { width: 100%; max-width: 460px; height: 100%; background: var(--bg); border-radius: 22px; display: flex; flex-direction: column; overflow: hidden; animation: pop .25s ease; }
+  .scene-body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .cp { display: flex; align-items: center; gap: 10px; }
+  .cp .big { font-size: 34px; } .cp .mood { font-size: 26px; margin-left: auto; }
+  .cp .nm { font-family: var(--font-display); font-weight: 700; font-size: 16px; }
+  .say { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; min-height: 44px; }
+  .deal { text-align: center; padding: 14px; }
+  .deal .st { font-size: 12px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .deal .pr { font-family: var(--font-display); font-weight: 900; font-size: 38px; }
+  .deal .pr.drop { animation: dropp .5s ease; }
+  @keyframes dropp { 0% { transform: scale(1.15); color: var(--good); } 100% { transform: none; } }
+  .deal .was { color: var(--faint); text-decoration: line-through; font-size: 14px; margin-left: 8px; }
+  .deal .sv { color: var(--good); font-weight: 700; font-size: 13.5px; min-height: 20px; }
+  .read { font-size: 12px; color: var(--soft); line-height: 1.5; background: var(--card2); border-radius: 12px; padding: 8px 12px; }
+  .read b { color: var(--ink); }
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; text-align: left; color: var(--ink); }
+  .opt .ic { font-size: 20px; } .opt .lb { flex: 1; font-size: 13.5px; font-weight: 600; }
+  .opt .ht { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+  .ht.g { background: rgba(24,166,107,0.16); color: var(--good); } .ht.e { background: rgba(245,184,61,0.2); color: #B7861A; } .ht.l { background: rgba(229,72,77,0.15); color: var(--bad); }
+  .opt:disabled { opacity: 0.4; }
+  .scene-foot { padding: 10px 14px 14px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 8px; border-top: 1px solid var(--line); }
+  .rounds { text-align: center; font-size: 12px; color: var(--faint); }
+
+  /* celebration */
+  .cele { width: 100%; max-width: 380px; text-align: center; background: var(--card); border-radius: 26px; padding: 26px 20px; position: relative; overflow: hidden; animation: pop .35s ease; }
+  .cele .big { font-size: 64px; line-height: 1; animation: bounce .6s ease; }
+  @keyframes bounce { 0% { transform: scale(0.3) rotate(-10deg); } 60% { transform: scale(1.2) rotate(4deg); } 100% { transform: none; } }
+  .cele h2 { font-family: var(--font-display); font-size: 24px; margin: 10px 0 2px; }
+  .cele .sub { color: var(--soft); font-size: 13.5px; line-height: 1.45; margin-bottom: 10px; }
+  .cele .stamp { display: inline-block; border: 3px solid var(--good); color: var(--good); font-family: var(--font-display); font-weight: 900; font-size: 20px; padding: 4px 14px; border-radius: 10px; transform: rotate(-4deg); margin: 4px 0 10px; }
+  .cele.grail { box-shadow: 0 0 0 3px var(--gold), 0 0 40px rgba(245,184,61,0.5); }
+  .cele .kv { text-align: left; background: var(--card2); border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; }
+  .confetti { position: absolute; top: -10px; font-size: 20px; animation: fall 1.6s ease-in forwards; pointer-events: none; }
+  @keyframes fall { to { transform: translateY(420px) rotate(360deg); opacity: 0; } }
+
+  .toast { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); border-radius: 14px; padding: 10px 16px; font-size: 13px; font-weight: 700; z-index: 60; box-shadow: var(--shadow); display: none; max-width: 90%; text-align: center; }
+  .toast.on { display: block; animation: pop .3s ease; }
+
+  /* end */
+  .end-wrap { padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .tier { font-family: var(--font-display); font-weight: 900; font-size: 84px; line-height: 1; text-align: center; color: var(--primary); }
+  @media (prefers-reduced-motion: reduce) { .fi, .modal, .scene, .cele, .cele .big, .sheet, .ov.on, .deal .pr.drop { animation: none; } .confetti { display: none; } .bar-fill, .goal .gf { transition: none; } .feed { scroll-behavior: auto; } }
+
+  /* ===== v2 additions ===== */
+  :root { --legend: #E0A02E; --rare: #3B7DD8; --flame: #FF7A2F; }
+  .top-row { display: flex; align-items: center; justify-content: space-between; }
+  .icon-btn { background: var(--card); border: 1px solid var(--line); border-radius: 12px; width: 38px; height: 38px; font-size: 17px; color: var(--ink); }
+  .grid3 { display: grid !important; grid-template-columns: repeat(3, 1fr); }
+  .chip.locked { opacity: 0.5; filter: grayscale(0.6); position: relative; }
+  .chip .lk { font-size: 10px; font-weight: 800; color: var(--primary); }
+  .title-wrap { padding-bottom: 28px; }
+
+  .rankc { display: flex; flex-direction: column; gap: 6px; }
+  .rk-top { display: flex; align-items: center; gap: 10px; }
+  .rk-badge { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--coral)); color: #fff; font-family: var(--font-display); font-weight: 900; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.2); }
+  .rk-name { font-family: var(--font-display); font-weight: 800; font-size: 16px; line-height: 1.1; }
+  .rk-sub { font-size: 11.5px; color: var(--soft); }
+  .rk-bar { height: 8px; background: var(--card2); border-radius: 6px; overflow: hidden; }
+  .rk-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--primary), var(--coral)); border-radius: 6px; transition: width .6s ease; }
+  .rk-next { font-size: 11.5px; color: var(--soft); }
+  .rk-next b { color: var(--ink); }
+
+  .daily { background: linear-gradient(135deg, var(--primary), #B14DF6); color: #fff; border: none; display: flex; flex-direction: column; gap: 8px; }
+  .daily .dh { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.95; }
+  .daily .streak { background: rgba(255,255,255,0.2); border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 800; letter-spacing: 0; text-transform: none; }
+  .daily .dt { font-family: var(--font-display); font-weight: 800; font-size: 19px; line-height: 1.15; }
+  .daily .dd { font-size: 12.5px; opacity: 0.9; line-height: 1.4; }
+  .daily .btn { background: #fff; color: #3B1FB8; box-shadow: 0 3px 0 rgba(0,0,0,0.25); }
+  .daily .btn.ghost { background: rgba(255,255,255,0.18); color: #fff; box-shadow: none; border-color: rgba(255,255,255,0.35); }
+  .daily .done { display: flex; align-items: center; gap: 12px; }
+  .daily .gl { width: 54px; height: 54px; border-radius: 14px; background: rgba(255,255,255,0.2); font-family: var(--font-display); font-weight: 900; font-size: 32px; display: flex; align-items: center; justify-content: center; }
+  .daily .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .three { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* header extras */
+  .perks { display: none; gap: 5px; flex-wrap: wrap; }
+  .perks.on { display: flex; }
+  .pk { font-size: 15px; width: 30px; height: 30px; border-radius: 9px; background: var(--card); border: 2px solid var(--rc, var(--line)); display: flex; align-items: center; justify-content: center; padding: 0; color: var(--ink); }
+  .pk.legendary { box-shadow: 0 0 10px rgba(224,160,46,0.6); }
+  .quest { display: none; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; font-size: 12px; color: var(--soft); cursor: pointer; text-align: left; width: 100%; }
+  .quest.on { display: block; }
+  .quest .qt { display: flex; justify-content: space-between; gap: 8px; }
+  .quest b { color: var(--ink); }
+  .quest .qb { height: 6px; background: var(--card2); border-radius: 4px; margin-top: 5px; overflow: hidden; }
+  .quest .qf { height: 100%; background: linear-gradient(90deg, var(--teal), var(--good)); border-radius: 4px; transition: width .5s ease; }
+  .quest.near .qf { background: linear-gradient(90deg, var(--gold), var(--flame)); }
+  .dock button { position: relative; }
+  .dock .dot { position: absolute; top: 2px; right: 8px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--flame); color: #fff; font-size: 11px; font-weight: 800; display: none; align-items: center; justify-content: center; font-style: normal; animation: ping 1.6s infinite; padding: 0 4px; }
+  .dock .dot.on { display: flex; }
+  @keyframes ping { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+  .dock .age { animation: pulse 2.2s ease-in-out infinite; }
+  .dock .age:disabled { animation: none; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 3px 0 rgba(0,0,0,0.25), 0 0 0 0 rgba(108,77,246,0.5); } 50% { box-shadow: 0 3px 0 rgba(0,0,0,0.25), 0 0 0 8px rgba(108,77,246,0); } }
+  .fi.pace.up { border-left: 4px solid var(--good); } .fi.pace.down { border-left: 4px solid var(--bad); }
+
+  /* negotiation upgrades */
+  .pat { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--soft); }
+  .pat .pb { flex: 1; height: 10px; background: var(--card2); border-radius: 6px; overflow: hidden; }
+  .pat .pb i { display: block; height: 100%; border-radius: 6px; transition: width .4s ease, background .3s; }
+  .pat.low .pb { animation: wob .5s infinite; }
+  @keyframes wob { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-1.5px); } 75% { transform: translateX(1.5px); } }
+  .combo { display: inline-flex; align-items: center; gap: 4px; background: linear-gradient(90deg, var(--flame), var(--gold)); color: #2A1400; font-weight: 900; font-size: 13px; padding: 3px 11px; border-radius: 999px; animation: pop .3s ease; }
+  .combo.c3 { font-size: 15px; box-shadow: 0 0 14px rgba(255,122,47,0.7); }
+  .combo.c4 { font-size: 17px; box-shadow: 0 0 22px rgba(255,122,47,0.95); }
+  .strip { display: flex; align-items: center; justify-content: space-between; min-height: 26px; gap: 8px; }
+  .rollrow { letter-spacing: 2px; font-size: 14px; }
+  .deal { position: relative; overflow: hidden; }
+  .float { position: absolute; right: 18px; top: 10px; color: var(--good); font-weight: 900; font-size: 18px; animation: floatup 1s ease-out forwards; pointer-events: none; }
+  @keyframes floatup { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30px); } }
+  .shake { animation: shake .45s; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 15% { transform: translateX(-8px); } 35% { transform: translateX(7px); } 55% { transform: translateX(-5px); } 75% { transform: translateX(3px); } }
+  .opt .mk { font-size: 15px; }
+  .opt .pc { font-size: 11px; font-weight: 800; padding: 3px 7px; border-radius: 999px; background: var(--card2); color: var(--ink); }
+  .opt.liked { border-color: var(--good); } .opt.disl { border-color: var(--bad); }
+  .gamble { background: linear-gradient(135deg, #2A1B5C, #5B2A86); color: #fff; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; text-align: center; }
+  .gamble .gt { font-family: var(--font-display); font-weight: 800; font-size: 16px; }
+  .gamble .gs { font-size: 12px; opacity: 0.9; line-height: 1.4; }
+  .gamble button { background: var(--gold); color: #2A1400; border: none; border-radius: 12px; padding: 11px; font-weight: 900; font-size: 14px; box-shadow: 0 3px 0 rgba(0,0,0,0.3); }
+  .gamble button:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.3); }
+
+  /* celebration grade */
+  .gradebox { display: flex; align-items: center; gap: 12px; text-align: left; background: var(--card2); border-radius: 14px; padding: 10px 12px; margin: 6px 0 10px; }
+  .gradebox .gl { width: 58px; height: 58px; border-radius: 16px; font-family: var(--font-display); font-weight: 900; font-size: 36px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; animation: bounce .6s ease; }
+  .g-S { background: linear-gradient(135deg, #F5B83D, #FF7A2F); box-shadow: 0 0 18px rgba(245,184,61,0.8); } .g-A { background: var(--good); } .g-B { background: var(--rare); } .g-C { background: #8C88A8; } .g-D { background: var(--bad); }
+  .gradebox .gt { font-weight: 800; font-size: 14.5px; } .gradebox .gx { font-size: 12px; color: var(--soft); line-height: 1.4; margin-top: 2px; }
+  .cele.sgrade { box-shadow: 0 0 0 3px var(--gold), 0 0 50px rgba(255,122,47,0.6); }
+  .newtag { display: inline-block; background: var(--flame); color: #fff; font-weight: 900; font-size: 11px; padding: 2px 9px; border-radius: 999px; margin-left: 6px; vertical-align: middle; animation: ping 1s 3; }
+  .xpline { font-size: 12.5px; color: var(--teal); font-weight: 800; margin-bottom: 8px; }
+
+  /* draft */
+  .draft { display: flex; flex-direction: column; gap: 8px; }
+  .dcard { background: var(--card2); border: 2px solid var(--rc, var(--line)); border-radius: 14px; padding: 11px 12px; text-align: left; color: var(--ink); display: flex; gap: 10px; align-items: center; animation: pop .3s ease backwards; }
+  .dcard:nth-child(2) { animation-delay: .08s; } .dcard:nth-child(3) { animation-delay: .16s; } .dcard:nth-child(4) { animation-delay: .24s; }
+  .dcard.legendary { box-shadow: 0 0 16px rgba(224,160,46,0.55); background: linear-gradient(135deg, var(--card2), rgba(224,160,46,0.15)); }
+  .dcard .e { font-size: 28px; }
+  .dcard .n { font-weight: 800; font-size: 14.5px; } .dcard .r { font-size: 10.5px; font-weight: 800; color: var(--rc); text-transform: uppercase; letter-spacing: 0.06em; }
+  .dcard .d { font-size: 12.5px; color: var(--soft); line-height: 1.35; margin-top: 1px; }
+
+  /* gallery */
+  .gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .gi { background: var(--card); border: 2px solid var(--rc, var(--line)); border-radius: 12px; padding: 8px 6px; text-align: center; font-size: 11px; min-height: 92px; display: flex; flex-direction: column; align-items: center; gap: 3px; justify-content: center; }
+  .gi .ge { font-size: 24px; } .gi b { font-size: 11px; line-height: 1.2; }
+  .gi.miss { opacity: 0.55; border-style: dashed; } .gi.miss .ge { filter: grayscale(1) brightness(0.5); }
+  .gi .sm { color: var(--faint); font-size: 10px; }
+  .gh { display: flex; justify-content: space-between; align-items: baseline; margin: 6px 0 -2px; }
+  .gh .t { font-weight: 800; font-size: 13px; } .gh .c { font-size: 11.5px; color: var(--soft); }
+  .rarebar { border-left: 4px solid var(--rc, var(--line)); }
+
+  /* life tab */
+  .qrow { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; }
+  .qrow .qi { font-size: 20px; } .qrow .qx { flex: 1; } .qrow .qp { height: 5px; background: var(--card2); border-radius: 3px; overflow: hidden; margin-top: 4px; } .qrow .qp i { display: block; height: 100%; background: var(--teal); }
+  .qrow .rw { font-size: 11px; color: var(--teal); font-weight: 800; }
+  .toggle { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; }
+
+  /* end */
+  .endhead { text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 19px; line-height: 1.2; }
+  .xpbar { height: 8px; background: var(--card2); border-radius: 6px; overflow: hidden; margin-top: 6px; } .xpbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--primary), var(--coral)); }
+  .stack { display: flex; flex-direction: column; gap: 8px; }
+  @media (prefers-reduced-motion: reduce) { .dock .age, .dock .dot, .combo, .float, .shake, .dcard, .newtag, .pat.low .pb, .gradebox .gl { animation: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TITLE -->
+  <section class="view active" id="view-title">
+    <div class="title-wrap">
+      <div class="top-row"><div class="logo">Life <em>Deal</em></div><button class="icon-btn" id="soundBtn" aria-label="Toggle sound">🔊</button></div>
+      <p class="tag">Live a whole life, one year at a time. Land the job, rent the flat, buy the grail, and the house. Every dollar is worth a negotiation.</p>
+      <div class="card rankc" id="rankCard"></div>
+      <div class="card daily" id="dailyCard"></div>
+      <div class="label">Your name</div>
+      <input class="name" id="nameInput" maxlength="14" autocomplete="off">
+      <div class="label">Who are you?</div>
+      <div class="chips grid3" id="archChips"></div>
+      <div class="label">Your obsession</div>
+      <div class="chips grid3" id="styleChips"></div>
+      <button class="btn btn-primary" id="startBtn">Start my life</button>
+      <button class="btn btn-ghost" id="continueBtn" style="display:none;">Continue my life</button>
+      <div class="three"><button class="btn btn-ghost" id="galleryBtn">📖 Collection</button><button class="btn btn-ghost" id="trophyBtn">🏆 Trophies</button></div>
+      <div class="mini-stats" id="miniStats"></div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section class="view" id="view-game">
+    <div class="head">
+      <div class="head-top">
+        <div class="who"><div class="avatar" id="avatar">🙂</div><div style="min-width:0"><div class="nm" id="whoName">Alex</div><div class="sb" id="whoSub">Age 22</div></div></div>
+        <div class="nw"><div class="l">Net worth</div><div class="v" id="nwVal">$0</div><div class="c" id="cashVal">$0 cash</div></div>
+      </div>
+      <div class="bars" id="bars"></div>
+      <div class="perks" id="perkRow"></div>
+      <button class="quest" id="questStrip"></button>
+      <div class="goal" id="goalStrip"></div>
+    </div>
+    <div class="feed" id="feed"></div>
+    <div class="dock">
+      <button id="dCareer"><span class="ic">💼</span>Career</button>
+      <button id="dShop"><span class="ic">🛍️</span>Shop<i class="dot" id="shopDot"></i></button>
+      <button class="age" id="dAge"><span class="ic">＋</span>AGE UP</button>
+      <button id="dAssets"><span class="ic">🏠</span>Assets</button>
+      <button id="dLife"><span class="ic">👤</span>Life</button>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section class="view" id="view-end">
+    <div class="end-wrap">
+      <div class="label" id="endKicker">Your life story</div>
+      <div class="tier" id="endTier">A</div>
+      <div class="endhead" id="endHead"></div>
+      <div class="card" id="endCard"></div>
+      <div class="card" id="endXP"></div>
+      <div class="card" id="endParts"></div>
+      <div class="card" id="endStuff"></div>
+      <div class="stack">
+        <button class="btn btn-primary" id="heirBtn">Play as your heir</button>
+        <button class="btn btn-ghost" id="againBtn">Start fresh</button>
+        <button class="btn btn-ghost" id="shareBtn">📋 Copy my life story</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="ov" id="ovModal"><div class="modal" id="modal"></div></div>
+<div class="ov sheet-ov" id="ovSheet"><div class="sheet"><div class="sheet-head"><h2 id="sheetTitle"></h2><button class="x" id="sheetClose" aria-label="Close">✕</button></div><div class="sheet-body" id="sheetBody"></div></div></div>
+<div class="ov" id="ovScene" style="padding:10px"><div class="scene" id="scene"></div></div>
+<div class="ov" id="ovCele" style="z-index:50"><div class="cele" id="cele"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+
+// ===== Life Deal — pure game logic (no DOM) =====
+function hashStr(s) { let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const money = n => (n < 0 ? '-' : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+const rr = (rng, a, b) => a + rng() * (b - a);
+const ri = (rng, a, b) => Math.floor(a + rng() * (b - a + 1));
+const pick = (rng, arr) => arr[Math.floor(rng() * arr.length)];
+const shuffleR = (rng, arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+const round5 = n => Math.max(5, Math.round(n / 5) * 5);
+
+const START_AGE = 22, END_AGE = 65;
+
+const ARCHETYPES = {
+  scholar: { label: 'The Scholar', emoji: '🎓', desc: 'Sharp mind, heavy student loans.', stats: { health: 78, happy: 62, smarts: 72, charm: 44 }, cash: 1500, debt: 22000, credit: 640, minRank: 1 },
+  charmer: { label: 'The Charmer', emoji: '😄', desc: 'Easy to like and easy to talk to.', stats: { health: 80, happy: 70, smarts: 52, charm: 72 }, cash: 2500, debt: 14000, credit: 650, minRank: 1 },
+  hustler: { label: 'The Hustler', emoji: '⚡', desc: 'Balanced, scrappy, always working an angle.', stats: { health: 76, happy: 60, smarts: 60, charm: 60 }, cash: 4000, debt: 18000, credit: 625, minRank: 1 },
+  insider: { label: 'The Insider', emoji: '🕶️', desc: 'Knows a guy. Starts with Bargain Radar.', stats: { health: 74, happy: 60, smarts: 58, charm: 58 }, cash: 3000, debt: 12000, credit: 645, minRank: 3, perk: 'radar' },
+  heir: { label: 'The Trust-Funder', emoji: '🥂', desc: 'Big head start, thin skin.', stats: { health: 70, happy: 55, smarts: 50, charm: 40 }, cash: 26000, debt: 0, credit: 700, minRank: 5 }
+};
+
+const RARITY = {
+  common: { label: 'Common', color: '#7A8794', happy: 2, charm: 1 },
+  rare: { label: 'Rare', color: '#3B7DD8', happy: 4, charm: 2 },
+  grail: { label: 'Grail', color: '#E0A02E', happy: 8, charm: 4 }
+};
+const APPR = { dress: { common: -0.10, rare: -0.02, grail: 0.02 }, sneaker: { common: -0.08, rare: 0.03, grail: 0.08 }, watch: { common: -0.04, rare: 0.04, grail: 0.10 } };
+
+const DRESSES = [
+  { name: 'Ivory linen sundress', rarity: 'common', base: 85, desc: 'Crisp ivory linen with tortoiseshell buttons and a tie belt. Made for a beach wedding or a long lunch.' },
+  { name: 'Black wrap dress', rarity: 'common', base: 110, desc: 'The one that works for interviews, dates and funerals. Never wrinkles, never judges.' },
+  { name: 'Floral midi', rarity: 'common', base: 95, desc: 'Soft cotton, tiny yellow flowers, and pockets. Real pockets.' },
+  { name: 'Denim shirt-dress', rarity: 'common', base: 120, desc: 'Rolled sleeves, brass snaps and an easy, effortless confidence.' },
+  { name: 'Emerald wrap dress', rarity: 'rare', base: 340, desc: 'Flowing emerald silk with gold thread along the hem. People ask where you got it.' },
+  { name: 'Navy tailored shirt-dress', rarity: 'rare', base: 420, desc: 'Mother-of-pearl buttons and a cut that works at a wedding or a Monday meeting.' },
+  { name: 'Blush satin slip', rarity: 'rare', base: 380, desc: 'Bias-cut so it moves when you walk, with a low back made for a night out.' },
+  { name: 'Vintage 70s maxi', rarity: 'rare', base: 520, desc: 'Burnt-orange paisley from an estate sale, smelling faintly of cedar and good decisions.' },
+  { name: 'Red cocktail dress', rarity: 'rare', base: 450, desc: 'Structured bodice, flared skirt. It enters the room half a second before you do.' },
+  { name: 'Burgundy velvet gown', rarity: 'grail', base: 1450, desc: 'Floor-length velvet with a subtle slit. One big night, worn for ten years.' },
+  { name: 'Hand-beaded couture gown', rarity: 'grail', base: 2400, desc: 'Four hundred hours of beadwork from one atelier. Weighs almost nothing, feels like armor.' },
+  { name: '1960s runway original', rarity: 'grail', base: 1900, desc: 'A museum-grade original, signed inside the hem. You would cry if someone spilled wine on it.' }
+];
+const SNEAKERS = [
+  { name: 'White canvas classics', rarity: 'common', base: 85, desc: 'Clean, simple, goes with everything. Deadstock from three years back.' },
+  { name: 'Grey running trainers', rarity: 'common', base: 110, desc: 'Cushioned, breathable, quietly judgmental about your step count.' },
+  { name: 'Black skate high-tops', rarity: 'common', base: 100, desc: 'Scuffed in all the right places. They have stories.' },
+  { name: 'Retro court shoes', rarity: 'common', base: 120, desc: 'Clean leather, gum sole, a hint of 1985.' },
+  { name: 'Cream & rust colorway', rarity: 'rare', base: 320, desc: 'Suede overlays from a collab that sold out in four minutes.' },
+  { name: 'Glow-lace edition', rarity: 'rare', base: 360, desc: 'Glow-in-the-dark laces and reflective detailing. Still sealed, hype sticker on.' },
+  { name: 'Metallic silver high-tops', rarity: 'rare', base: 420, desc: 'Chunky retro sole, already trending on every resale forum.' },
+  { name: 'Chunky collab runners', rarity: 'rare', base: 380, desc: 'A designer collab that looks ridiculous and feels incredible.' },
+  { name: 'Matte black low-tops', rarity: 'rare', base: 480, desc: 'Translucent gum sole and a hand-numbered tag. Subtle until you notice.' },
+  { name: 'Numbered grail low-tops (247/500)', rarity: 'grail', base: 1500, desc: 'Hand-numbered, ever-rising resale value, and a box you will never throw away.' },
+  { name: 'Prototype sample pair', rarity: 'grail', base: 2300, desc: 'A factory sample that was never meant to leave the building. One of one.' },
+  { name: 'Tour-exclusive 1990s original', rarity: 'grail', base: 1800, desc: 'Worn by no one, kept in a climate-controlled drawer since 1994.' }
+];
+const WATCHES = [
+  { name: 'Steel field watch', rarity: 'common', base: 95, desc: 'A no-nonsense dial that survives rain, gyms and your worst Mondays.' },
+  { name: 'Retro digital classic', rarity: 'common', base: 80, desc: 'Square screen, loud alarm, and a calculator you will never use.' },
+  { name: 'Canvas-strap diver', rarity: 'common', base: 110, desc: 'Rated to 200 metres. Your deepest swim is the hotel pool.' },
+  { name: 'Minimalist quartz', rarity: 'common', base: 120, desc: 'Three hands, zero fuss, and a leather strap that gets better with age.' },
+  { name: 'Automatic skeleton', rarity: 'rare', base: 360, desc: 'You can watch the gears turn. You will, constantly, in meetings.' },
+  { name: 'Sunburst green dial', rarity: 'rare', base: 410, desc: 'The dial shifts from forest to emerald as it catches the light.' },
+  { name: 'Moonphase dress watch', rarity: 'rare', base: 520, desc: 'A tiny moon crosses the dial each month. Pure, glorious impracticality.' },
+  { name: 'Vintage 1970s chronograph', rarity: 'rare', base: 480, desc: 'Patina on the lume, a scratch on the crystal, and one previous owner with taste.' },
+  { name: 'Titanium GMT', rarity: 'rare', base: 450, desc: 'Two time zones, featherweight case, built for people who say "per my last email" in three cities.' },
+  { name: 'Limited-edition tourbillon', rarity: 'grail', base: 2400, desc: 'A spinning cage of 60 parts that defeats gravity. Numbered 31 of 100.' },
+  { name: '1960s dive-watch original', rarity: 'grail', base: 1900, desc: 'Pulled from a salvage diver\'s estate. The box still smells of the sea.' },
+  { name: 'Hand-engraved perpetual calendar', rarity: 'grail', base: 1500, desc: 'It knows leap years until 2100. Which is more planning than most of us manage.' }
+];
+const CATALOGS = { dress: DRESSES, sneaker: SNEAKERS, watch: WATCHES };
+const STYLE_META = {
+  dress: { emoji: '👗', word: 'Dresses', desc: 'Rare pieces keep their charm', minRank: 1 },
+  sneaker: { emoji: '👟', word: 'Sneakers', desc: 'Grails can appreciate like art', minRank: 1 },
+  watch: { emoji: '⌚', word: 'Watches', desc: 'Grails compound like fine wine', minRank: 4 }
+};
+const hasPerk = (l, id) => !!(l.perks && l.perks.indexOf(id) >= 0);
+
+const HOMES = [
+  { name: 'Cozy starter condo', base: 215000, beds: 1, baths: 1, desc: 'One bedroom, a balcony that fits exactly two chairs, and a landlord-free life.' },
+  { name: 'Sunlit townhouse', base: 295000, beds: 2, baths: 2, desc: 'Two floors, a tiny garden, and a kitchen that makes you want to learn to cook.' },
+  { name: 'Family house with a yard', base: 385000, beds: 3, baths: 2, desc: 'A swing set already in the yard and a front porch built for slow evenings.' },
+  { name: 'Hilltop dream villa', base: 700000, beds: 4, baths: 3, desc: 'Glass walls, a view that stops conversations, and a mortgage that starts them.' }
+];
+const CARS = [
+  { name: 'Reliable used hatchback', base: 9500, desc: 'Ninety thousand miles of loyalty and one mysterious rattle.' },
+  { name: 'Practical sedan', base: 17000, desc: 'Quiet, efficient, and slightly boring in the way a good friend is.' },
+  { name: 'Family SUV', base: 29000, desc: 'Room for groceries, kids, and every decision you have not made yet.' },
+  { name: 'Weekend roadster', base: 52000, desc: 'Two seats, a manual gearbox, and zero practical justification.' }
+];
+const RENTALS = [
+  { name: 'Studio over a bakery', base: 950, desc: 'Smells like fresh bread every morning. The shower is a negotiation of its own.' },
+  { name: 'Bright one-bedroom', base: 1250, desc: 'Big windows, thin walls, and a landlord who answers texts.' },
+  { name: 'Shared two-bed (your half)', base: 800, desc: 'A roommate named Priya who labels everything in the fridge.' },
+  { name: 'Downtown loft', base: 1650, desc: 'Exposed brick, high ceilings, and an elevator that only works when it wants to.' }
+];
+const JOBS = [
+  { id: 'analyst', title: 'Junior Analyst', salary: 54000, req: { smarts: 55 }, desc: 'Spreadsheets, deadlines and a very good coffee machine.' },
+  { id: 'dev', title: 'Software Associate', salary: 68000, req: { smarts: 66 }, desc: 'Ship things, fix things, argue about tabs versus spaces.' },
+  { id: 'nurse', title: 'Staff Nurse', salary: 60000, req: { health: 60, smarts: 50 }, desc: 'Long shifts, real impact, comfortable shoes.' },
+  { id: 'marketing', title: 'Marketing Coordinator', salary: 47000, req: { charm: 50 }, desc: 'Campaigns, brand voices and a lot of meetings about meetings.' },
+  { id: 'sales', title: 'Sales Associate', salary: 43000, req: { charm: 58 }, desc: 'Base pay plus whatever you can talk people into.' },
+  { id: 'teacher', title: 'Teacher', salary: 41000, req: { smarts: 50 }, desc: 'Modest pay, summers off, and a drawer full of confiscated fidget toys.' },
+  { id: 'designer', title: 'Junior Designer', salary: 50000, req: { charm: 50, smarts: 50 }, desc: 'Pixels, feedback and clients who say "make the logo bigger".' },
+  { id: 'cafe', title: 'Cafe Supervisor', salary: 35000, req: {}, desc: 'Early mornings, regulars who know your name, and tips that add up.' }
+];
+
+const CP_NAMES = {
+  shop: [['Dolores', '💅'], ['Mrs. Petrova', '🧣'], ['Zane', '😅'], ['K-Dawg', '😎'], ['Imani', '🧵'], ['Marco', '🕶️']],
+  home: [['The Hendersons', '🏡'], ['Ms. Alvarez (agent)', '📋'], ['Mr. Tran', '🔑'], ['The Okafors', '🏠']],
+  car: [['Big Mike', '🚗'], ['Dealer Denise', '🔧'], ['Sam from the lot', '🛞']],
+  rent: [['Landlord Kowalski', '🗝️'], ['Property manager Dana', '📎'], ['Mrs. Lindqvist', '🏢']],
+  salary: [['Hiring manager Priya', '💼'], ['Mr. Brooks (HR)', '📁'], ['Director Chen', '🧑‍💼']],
+  sell: [['Jordan', '🛍️'], ['Lee (resale shop)', '🏷️'], ['A collector named Fay', '🧐']]
+};
+const LIKE_CLUE = {
+  facts: 'Respects people who come prepared with facts.', rapport: 'Warms up to friendly, genuine people.',
+  ask: 'Appreciates people who simply say what they want.', leverage: 'Pays attention when you are clearly ready to close.'
+};
+const DISLIKE_CLUE = {
+  facts: 'Gets defensive when challenged with numbers.', rapport: 'Has no patience for small talk.',
+  ask: 'Bristles at blunt demands.', leverage: 'Hates feeling pressured to rush.'
+};
+const LABELS = {
+  shop: { ask: 'Ask for their best price', facts: 'Point out flaws and compare prices', rapport: 'Chat and build rapport', leverage: 'Show you are ready to buy today', bluff: 'Say you saw it cheaper elsewhere' },
+  car: { ask: 'Ask for their best price', facts: 'Point to mileage and repair history', rapport: 'Chat and build rapport', leverage: 'Offer to buy today', bluff: 'Mention a cheaper listing' },
+  home: { ask: 'Ask them to come down on price', facts: 'Cite recent nearby sales', rapport: 'Connect over the home\'s story', leverage: 'Show your pre-approval and quick close', bluff: 'Hint at another house you might bid on' },
+  rent: { ask: 'Ask for a lower rent', facts: 'Cite cheaper listings nearby', rapport: 'Promise to be a great tenant', leverage: 'Offer a longer lease', bluff: 'Say you are about to sign elsewhere' },
+  salary: { ask: 'Ask for more', facts: 'Present market salary data', rapport: 'Talk about fit and enthusiasm', leverage: 'Point to your track record', bluff: 'Claim a competing offer' },
+  sell: { ask: 'Name a higher price', facts: 'Show condition and paperwork', rapport: 'Share the item\'s story', leverage: 'Mention other interested buyers', bluff: 'Claim a better offer elsewhere' }
+};
+const TACTIC_ICON = { ask: '🗣️', facts: '📊', rapport: '🤝', leverage: '💼', bluff: '🎭' };
+const SUCCESS = {
+  ask: ['Hm. Fine, I can come down a little.', 'You have some nerve. Okay, a bit better.'],
+  facts: ['You have clearly done your homework. Let me adjust.', 'Fair point. I cannot argue with those numbers.'],
+  rapport: ['Honestly, I like you. Let me see what I can do.', 'You are easy to talk to. Here is a better number.'],
+  leverage: ['If you are ready now, I can work with that.', 'That changes things. New number.'],
+  bluff: ['Ugh, fine. I do not want to lose you. Better offer.', 'Okay, okay. Let me beat that.']
+};
+const FAIL = {
+  ask: ['That is my number.', 'I cannot do that.'],
+  facts: ['I do not agree with those numbers.', 'That does not change anything for me.'],
+  rapport: ['Nice chat, but the number is the number.', 'Charm will not move this.'],
+  leverage: ['Plenty of people are ready right now.', 'I am in no rush.'],
+  bluff: ['I do not believe you.', 'Then go take that offer.']
+};
+
+function newLife(opts, seed) {
+  const a = ARCHETYPES[opts.archetype] || ARCHETYPES.hustler;
+  const heir = opts.heir || null;
+  const l = {
+    seed, name: opts.name || 'Alex', archetype: opts.archetype || 'hustler', style: opts.style || 'dress',
+    age: START_AGE, alive: true, stats: Object.assign({}, a.stats), cash: a.cash + (opts.bonusCash || 0) + (heir ? heir.cash : 0), debt: a.debt, debt0: a.debt, credit: a.credit,
+    job: null, salary: 0, perf: 50, yearsInRole: 0, jobless: false,
+    housing: 'family', rent: 0, home: null, car: null, wardrobe: [], pet: false,
+    partner: null, kids: 0, retirement: 0, contributing: false, priceIndex: 1,
+    flags: { beginner: !!opts.beginner, rerolls: 1 }, last: {}, raiseAskAge: -9,
+    haggle: { xp: 0, level: 1, saved: 0, scenes: 0, wins: 0, longshot: 0, grades: { S: 0, A: 0, B: 0, C: 0, D: 0 }, maxCombo: 0, bestSave: 0, gambles: 0, best: null },
+    achievements: {}, goal: null, lastYear: null, deathCause: null,
+    perks: a.perk ? [a.perk] : [], quests: {}, curve: {}, heirOf: heir ? true : false
+  };
+  if (heir && heir.heirloom) {
+    const h = heir.heirloom;
+    l.wardrobe.push({ id: 'heirloom:' + h.name, name: h.name, desc: h.desc, rarity: h.rarity, paid: h.value, value: h.value, appr: h.appr, boughtAge: START_AGE, heirloom: true });
+  }
+  return l;
+}
+// make older saves compatible with newer fields
+function upgradeLife(l) {
+  l.perks = l.perks || []; l.quests = l.quests || {}; l.curve = l.curve || {}; l.flags = l.flags || {};
+  if (l.debt0 === undefined) l.debt0 = Math.max(20000, l.debt);
+  if (l.flags.rerolls === undefined) l.flags.rerolls = 0;
+  const h = l.haggle;
+  h.grades = h.grades || { S: 0, A: 0, B: 0, C: 0, D: 0 };
+  ['maxCombo', 'bestSave', 'gambles'].forEach(k => { if (h[k] === undefined) h[k] = 0; });
+  if (h.best === undefined) h.best = null;
+  return l;
+}
+
+const wardrobeValue = l => l.wardrobe.reduce((s, i) => s + i.value, 0);
+const netWorth = l => l.cash + l.retirement + (l.home ? l.home.value - l.home.loan : 0) + (l.car ? l.car.value : 0) + wardrobeValue(l) - l.debt;
+const charmBonus = l => Math.min(12, l.wardrobe.reduce((s, i) => s + RARITY[i.rarity].charm, 0));
+const effCharm = l => clamp(l.stats.charm + charmBonus(l), 0, 100);
+const partnerActive = l => !!(l.partner && l.partner.together);
+const taxRate = g => clamp(0.19 + (g - 40000) / 280000, 0.19, 0.36);
+const closetCap = l => 8 + (l.home ? l.home.beds * 2 : 0) + (l.housing === 'rent' ? 2 : 0) + (hasPerk(l, 'collector') ? 3 : 0);
+const mortgageRate = l => clamp(7.4 - (l.credit - 600) / 110, 4.8, 8.2) / 100;
+const annuity = (principal, rate, years) => principal * rate / (1 - Math.pow(1 + rate, -years));
+const snap = l => ({ health: l.stats.health, happy: l.stats.happy, smarts: l.stats.smarts, charm: l.stats.charm, cash: l.cash, debt: l.debt, nw: netWorth(l) });
+
+function fx(l, e) {
+  ['health', 'happy', 'smarts', 'charm'].forEach(k => { if (e[k]) l.stats[k] = clamp(l.stats[k] + e[k], 0, 100); });
+  if (e.cash) l.cash += e.cash;
+  if (e.debt) l.debt = Math.max(0, l.debt + e.debt);
+  if (e.credit) l.credit = clamp(l.credit + e.credit, 400, 830);
+  if (e.perf) l.perf = clamp(l.perf + e.perf, 10, 100);
+  settleCash(l);
+}
+function settleCash(l) {
+  if (l.cash < 0) { l.debt += -l.cash; l.cash = 0; l.credit = clamp(l.credit - 12, 400, 830); l.flags.overdraft = true; }
+}
+
+// ---------- negotiation scenes ----------
+function makeCp(kind, rng) {
+  const [name, emoji] = pick(rng, CP_NAMES[kind]);
+  const t = ['facts', 'rapport', 'ask', 'leverage'];
+  const sh = shuffleR(rng, t);
+  return { name, emoji, likes: sh[0], dislikes: sh[1], clueLike: LIKE_CLUE[sh[0]], clueDislike: DISLIKE_CLUE[sh[1]] };
+}
+function leverageBonus(l, scene) {
+  if (scene.kind === 'salary') return clamp((l.perf - 50) / 300, -0.08, 0.15);
+  if (scene.kind === 'sell') return 0.06;
+  return clamp((l.credit - 600) / 800 + Math.min(0.15, l.cash / Math.max(1, scene.start) * 0.2), -0.05, 0.25);
+}
+function tacticBase(l, scene, id) {
+  const charm = effCharm(l), smarts = l.stats.smarts;
+  let p;
+  if (id === 'ask') p = 0.50 + ((charm + smarts) / 2 - 50) / 300;
+  else if (id === 'facts') p = 0.48 + (smarts - 50) / 150;
+  else if (id === 'rapport') p = 0.48 + (charm - 50) / 150;
+  else if (id === 'leverage') p = 0.40 + leverageBonus(l, scene);
+  else p = 0.30 + (charm - 50) / 250;
+  if (id === 'rapport' && hasPerk(l, 'silver')) p += 0.12;
+  if (id === 'facts' && hasPerk(l, 'numbers')) p += 0.12;
+  if (id === 'ask' && hasPerk(l, 'blunt')) p += 0.12;
+  if (id === 'leverage' && hasPerk(l, 'closer')) p += 0.12;
+  if (id === 'bluff' && hasPerk(l, 'poker')) p += 0.10;
+  if (hasPerk(l, 'golden')) p += 0.08;
+  if (l.flags.beginner && l.haggle.scenes < 2) p += 0.12;
+  return clamp(p + (l.haggle.level - 1) * 0.02 - scene.round * 0.03, 0.08, 0.9);
+}
+function tacticChance(l, scene, id, withTrait) {
+  let p = tacticBase(l, scene, id);
+  if (withTrait) { if (scene.cp.likes === id) p += 0.18; if (scene.cp.dislikes === id) p -= 0.22; }
+  return clamp(p, 0.05, 0.92);
+}
+function hintLabel(p) { return p >= 0.62 ? 'Good odds' : p >= 0.45 ? 'Even odds' : 'Long shot'; }
+function sceneOptions(l, scene) {
+  return ['ask', 'facts', 'rapport', 'leverage', 'bluff'].map(id => {
+    const p = tacticChance(l, scene, id, false);
+    return { id, icon: TACTIC_ICON[id], label: LABELS[scene.kind][id], hint: hintLabel(p), p };
+  });
+}
+// kind: shop|car|home|rent (buy, price goes DOWN) | salary|sell (price goes UP)
+function startScene(l, spec, rng) {
+  const down = spec.kind !== 'salary' && spec.kind !== 'sell';
+  const start = spec.start;
+  const limit = down ? start * rr(rng, spec.floor[0], spec.floor[1]) : start * rr(rng, spec.ceil[0], spec.ceil[1]);
+  return {
+    kind: spec.kind, title: spec.title, subject: spec.subject, desc: spec.desc, unit: spec.unit || '', cp: spec.cp || makeCp(spec.kind === 'car' ? 'car' : spec.kind, rng),
+    dir: down ? 'down' : 'up', start, current: start, limit, maxRounds: 4 + (hasPerk(l, 'gab') ? 1 : 0), round: 0, patience: 100, combo: 0, maxCombo: 0, rolls: [], rerolled: false, gambled: false, gambleWon: false,
+    over: null, final: false, longshot: false, used: [], apply: spec.apply, meta: spec.meta || {}, accepted: false
+  };
+}
+const SCENE_RANGE = { ask: [0.20, 0.35], facts: [0.25, 0.40], rapport: [0.18, 0.32], leverage: [0.28, 0.45], bluff: [0.40, 0.65] };
+const SCENE_PAT = { ask: [16, 24], facts: [12, 20], rapport: [8, 16], leverage: [14, 22], bluff: [30, 45] };
+const comboCap = l => hasPerk(l, 'golden') ? 0.70 : 0.45;
+function sceneStep(l, scene, id, rng) {
+  if (scene.over || scene.final) return null;
+  const p = tacticChance(l, scene, id, true);
+  let ok = rng() < p, lucky = false;
+  if (!ok && hasPerk(l, 'lucky') && !scene.rerolled) { scene.rerolled = true; ok = rng() < p; lucky = ok; }
+  const gap = Math.abs(scene.limit - scene.current);
+  const sign = scene.dir === 'down' ? -1 : 1;
+  let text, delta = 0, mult = 1;
+  scene.round += 1; scene.used.push(id);
+  if (ok) {
+    scene.combo += 1; scene.maxCombo = Math.max(scene.maxCombo, scene.combo);
+    mult = 1 + Math.min(comboCap(l), 0.15 * (scene.combo - 1));
+    const [a, b] = SCENE_RANGE[id];
+    delta = Math.min(gap * 0.97, gap * rr(rng, a, b) * mult);
+    scene.current = scene.current + sign * delta;
+    scene.patience -= rr(rng, 4, 9);
+    text = pick(rng, SUCCESS[id]);
+    if (p < 0.35) scene.longshot = true;
+  } else {
+    scene.combo = 0;
+    const [a, b] = SCENE_PAT[id];
+    scene.patience -= rr(rng, a, b) * (hasPerk(l, 'patient') ? 0.75 : 1);
+    text = pick(rng, FAIL[id]);
+    if (id === 'bluff' && rng() < (hasPerk(l, 'poker') ? 0.12 : 0.35)) { scene.over = 'walked'; text += ' They end the conversation.'; }
+  }
+  scene.rolls.push(ok ? '🟩' : '🟥');
+  if (!scene.over && (scene.patience <= 0 || scene.round >= scene.maxRounds)) scene.final = true;
+  return { ok, text, delta, p, combo: scene.combo, mult, lucky };
+}
+// The "go for broke" push: only when the talk is over, one shot, lose it all if they snap.
+function gambleOdds(l, scene) {
+  return clamp(0.38 + scene.combo * 0.04 + (hasPerk(l, 'golden') ? 0.08 : 0) + (hasPerk(l, 'poker') ? 0.05 : 0) + (scene.patience / 100 - 0.4) * 0.12, 0.2, 0.62);
+}
+function sceneGamble(l, scene, rng) {
+  if (scene.over || !scene.final || scene.gambled) return null;
+  scene.gambled = true;
+  const p = gambleOdds(l, scene);
+  const ok = rng() < p;
+  const gap = Math.abs(scene.limit - scene.current), sign = scene.dir === 'down' ? -1 : 1;
+  scene.rolls.push('🟨');
+  if (ok) {
+    const delta = gap * rr(rng, 0.45, 0.70);
+    scene.current += sign * delta; scene.gambleWon = true; if (p < 0.45) scene.longshot = true;
+    return { ok: true, delta, p, text: 'You push your luck... and they blink. New number.' };
+  }
+  scene.over = 'walked';
+  return { ok: false, delta: 0, p, text: 'You push too far. They stand up and leave.' };
+}
+function sceneGrade(scene) {
+  const full = Math.abs(scene.start - scene.limit);
+  const got = Math.max(0, sceneSaved(scene));
+  const ratio = full > 0 ? clamp(got / full, 0, 1) : 0;
+  const letter = ratio >= 0.90 ? 'S' : ratio >= 0.76 ? 'A' : ratio >= 0.54 ? 'B' : ratio >= 0.30 ? 'C' : 'D';
+  return { ratio, letter, left: Math.max(0, full - got) };
+}
+const sceneSaved = s => s.dir === 'down' ? s.start - s.current : s.current - s.start;
+const sceneMood = s => s.over ? '😠' : s.patience > 66 ? '🙂' : s.patience > 33 ? '😐' : '😬';
+const GRADE_XP = { S: 30, A: 18, B: 10, C: 5, D: 2 };
+function recordHaggle(l, scene, grade) {
+  const saved = Math.max(0, sceneSaved(scene) * (scene.unit === 'mo' ? 12 : 1));
+  const h = l.haggle;
+  h.saved += saved; h.scenes += 1;
+  if (saved > 0) h.wins += 1;
+  if (scene.longshot && saved > 0) h.longshot += 1;
+  h.grades[grade.letter] += 1;
+  h.maxCombo = Math.max(h.maxCombo, scene.maxCombo);
+  h.bestSave = Math.max(h.bestSave, saved);
+  if (scene.gambleWon) h.gambles += 1;
+  if (!h.best || saved > h.best.saved) h.best = { name: scene.subject, saved: Math.round(saved), letter: grade.letter };
+  h.xp += 10 + saved / 200 + GRADE_XP[grade.letter] / 2;
+  h.level = clamp(1 + Math.floor(h.xp / 60), 1, 6);
+  return saved;
+}
+// Close a scene: accepted=true applies the deal, false walks away.
+function finishScene(l, scene, accepted, rng, opts) {
+  if (!accepted || scene.over === 'walked') return { ok: false, walked: true, text: 'You walked away.' };
+  const price = Math.round(scene.current);
+  const res = scene.apply(l, price, opts || {}, rng);
+  if (res.ok) {
+    const grade = sceneGrade(scene);
+    res.saved = recordHaggle(l, scene, grade);
+    res.grade = grade; res.floor = Math.round(scene.limit); res.rolls = scene.rolls.slice();
+    res.maxCombo = scene.maxCombo; res.gambleWon = scene.gambleWon;
+  }
+  return res;
+}
+
+// ---------- shopping ----------
+function addItemToCloset(l, listing, paid) {
+  const val = Math.round(listing.listPrice * 0.85);
+  l.wardrobe.push({ id: listing.id + ':' + l.age, name: listing.name, desc: listing.desc, rarity: listing.rarity, paid, value: val, appr: APPR[l.style][listing.rarity], boughtAge: l.age });
+  fx(l, { happy: RARITY[listing.rarity].happy });
+  return val;
+}
+function payFor(l, price, allowCredit) {
+  if (l.cash >= price) { l.cash -= price; return { ok: true }; }
+  if (!allowCredit || l.credit < 560) return { ok: false, shortfall: price - l.cash, canCredit: l.credit >= 560 };
+  const short = price - l.cash; l.cash = 0; l.debt += short; l.credit = clamp(l.credit - 12, 400, 830);
+  return { ok: true, onCredit: short };
+}
+function purchaseScene(l, listing, rng) {
+  const floors = { shop: [0.78, 0.90], car: [0.84, 0.93], home: [0.88, 0.96], rent: [0.90, 0.97] };
+  const kind = listing.kind;
+  const fl = listing.floorRange || floors[kind];
+  const apply = (life, price, opts) => {
+    if (kind === 'shop') {
+      if (life.wardrobe.length >= closetCap(life)) return { ok: false, reason: 'full', price, cap: closetCap(life) };
+      const pay = payFor(life, price, opts.credit);
+      if (!pay.ok) return { ok: false, reason: 'funds', shortfall: pay.shortfall, canCredit: pay.canCredit, price };
+      const val = addItemToCloset(life, Object.assign({}, listing, { listPrice: listing.market || listing.price }), price);
+      return { ok: true, kind: 'item', price, value: val, item: life.wardrobe[life.wardrobe.length - 1], onCredit: pay.onCredit, text: 'It is yours.' };
+    }
+    if (kind === 'car') {
+      const pay = payFor(life, price, opts.credit);
+      if (!pay.ok) return { ok: false, reason: 'funds', shortfall: pay.shortfall, canCredit: pay.canCredit, price };
+      life.car = { name: listing.name, desc: listing.desc, paid: price, value: Math.round((listing.market || listing.price) * 0.9) };
+      fx(life, { happy: 5 });
+      return { ok: true, kind: 'car', price, value: life.car.value, text: 'Keys in hand.' };
+    }
+    if (kind === 'rent') {
+      life.housing = 'rent'; life.rent = price * 12; life.flags.movedOut = true; life.homeName = listing.name; life.homeDesc = listing.desc;
+      fx(life, { happy: 6 });
+      return { ok: true, kind: 'rent', price, text: 'You signed the lease.' };
+    }
+    // home purchase with a mortgage
+    const closing = price * 0.03;
+    const maxDown = life.cash - closing - 2000;
+    if (maxDown < price * 0.10) return { ok: false, reason: 'down', need: price * 0.10 + closing + 2000, price };
+    const down = clamp(price * 0.20, price * 0.10, maxDown);
+    const loan = price - down, rate = mortgageRate(life), pay = annuity(loan, rate, 30);
+    const income = life.salary + (partnerActive(life) ? life.partner.income * 1.25 : 0);
+    if (pay + Math.min(life.debt, 2400) > 0.45 * income) return { ok: false, reason: 'dti', price, pay, income };
+    life.cash -= down + closing;
+    life.home = { name: listing.name, desc: listing.desc, beds: listing.extra.beds, baths: listing.extra.baths, paid: price, value: price, loan, rate, payment: pay, boughtAge: life.age };
+    life.housing = 'own'; life.rent = 0;
+    fx(life, { happy: 12 });
+    return { ok: true, kind: 'home', price, value: price, down, loan, rate, payment: pay, text: 'The keys are yours.' };
+  };
+  const unit = kind === 'rent' ? 'mo' : '';
+  return startScene(l, { kind, title: listing.name, subject: listing.name, desc: listing.desc, start: Math.round(listing.price * (hasPerk(l, 'thrifty') ? 0.97 : 1)), floor: fl, apply, unit, meta: { listing } }, rng);
+}
+function shopListings(l, cat) {
+  const rng = mulberry32((l.seed ^ hashStr(cat + ':' + l.age + ':' + (l.flags.market || 0))) >>> 0);
+  const idx = l.priceIndex;
+  const out = [];
+  if (cat === 'wardrobe') {
+    const catalog = CATALOGS[l.style] || DRESSES;
+    const sale = l.flags.saleAge === l.age ? 0.9 : 1;
+    const by = r => shuffleR(rng, catalog.filter(i => i.rarity === r));
+    const picks = [by('common')[0], by('rare')[0], by('rare')[1], rng() < 0.7 ? by('grail')[0] : by('common')[1]];
+    picks.forEach(it => {
+      const price = round5(it.base * idx * rr(rng, 0.92, 1.1) * sale);
+      out.push({ id: 'w:' + it.name, cat, kind: 'shop', name: it.name, desc: it.desc, rarity: it.rarity, price, tag: sale < 1 ? 'Private sale' : '', cp: makeCp('shop', rng) });
+    });
+    if (l.flags.dropAge === l.age) {
+      const g = shuffleR(rng, catalog.filter(i => i.rarity === 'grail'))[0];
+      out.unshift({ id: 'w:drop:' + g.name, cat, kind: 'shop', name: g.name, desc: g.desc, rarity: 'grail', price: round5(g.base * idx * 1.12), tag: 'Limited drop', floorRange: [0.88, 0.96], cp: makeCp('shop', rng) });
+    }
+  } else if (cat === 'home') {
+    shuffleR(rng, HOMES).slice(0, 3).forEach(h => {
+      out.push({ id: 'h:' + h.name, cat, kind: 'home', name: h.name, desc: h.desc, price: round5(h.base * idx * rr(rng, 0.93, 1.1)), extra: { beds: h.beds, baths: h.baths }, cp: makeCp('home', rng) });
+    });
+  } else if (cat === 'rent') {
+    shuffleR(rng, RENTALS).slice(0, 3).forEach(h => {
+      out.push({ id: 'r:' + h.name, cat, kind: 'rent', name: h.name, desc: h.desc, price: round5(h.base * idx * rr(rng, 0.94, 1.08)), cp: makeCp('rent', rng) });
+    });
+  } else if (cat === 'car') {
+    shuffleR(rng, CARS).slice(0, 3).forEach(c => {
+      out.push({ id: 'c:' + c.name, cat, kind: 'car', name: c.name, desc: c.desc, price: round5(c.base * idx * rr(rng, 0.94, 1.08)), cp: makeCp('car', rng) });
+    });
+  }
+  return out;
+}
+
+// ---------- jobs ----------
+function eligibleJobs(l) {
+  return JOBS.filter(j => Object.keys(j.req).every(k => (k === 'charm' ? effCharm(l) : l.stats[k]) >= j.req[k]));
+}
+function jobScene(l, job, rng, isRaise) {
+  const salary = round5(job.salary * l.priceIndex * rr(rng, 0.95, 1.07));
+  const apply = (life, price) => {
+    life.job = job.title; life.salary = Math.round(price / 100) * 100; life.jobless = false; life.yearsInRole = 0; life.perf = Math.max(life.perf, 50);
+    fx(life, { happy: 6 });
+    return { ok: true, kind: 'job', price, text: 'You start on Monday.' };
+  };
+  return startScene(l, { kind: 'salary', title: job.title, subject: job.title, desc: job.desc, start: salary, ceil: hasPerk(l, 'wage') ? [1.10, 1.20] : [1.05, 1.15], apply, meta: { job } }, rng);
+}
+function raiseScene(l, rng) {
+  const base = Math.round(l.salary * 1.01);
+  const apply = (life, price) => { life.salary = Math.min(Math.round(price / 100) * 100, Math.round(190000 * life.priceIndex)); life.raiseAskAge = life.age; fx(life, { happy: 5 }); return { ok: true, kind: 'raise', price, text: 'Your new salary starts this month.' }; };
+  const s = startScene(l, { kind: 'salary', title: 'Raise review', subject: 'Your annual raise', desc: 'Your manager has a number in mind. You have a better one.', start: base, ceil: [1.0, 1.0], apply }, rng);
+  s.limit = l.salary * rr(rng, 1.04, 1.04 + clamp((l.perf - 40) / 500, 0.01, 0.10));
+  s.meta = { raise: true };
+  return s;
+}
+function sellScene(l, kind, ref, rng, opts) {
+  opts = opts || {};
+  const value = kind === 'car' ? l.car.value : ref.value;
+  const start = round5(value * rr(rng, 0.70, 0.82) * (hasPerk(l, 'flipper') ? 1.08 : 1) * (1 + (opts.premium || 0)));
+  const apply = (life, price) => {
+    if (kind === 'car') { life.car = null; } else { life.wardrobe = life.wardrobe.filter(i => i !== ref); }
+    life.cash += price;
+    if (price > ref.paid) life.flags.flipProfit = (life.flags.flipProfit || 0) + (price - ref.paid);
+    fx(life, { happy: -2 });
+    return { ok: true, kind: 'sold', price, text: 'Sold.' };
+  };
+  return startScene(l, { kind: 'sell', title: 'Selling: ' + ref.name, subject: ref.name, desc: ref.desc, start, ceil: [1.06, 1.22], apply, floor: null }, rng);
+}
+
+// ---------- events ----------
+const EVENTS = [];
+const ev = o => EVENTS.push(Object.assign({ w: 1, cd: 3, minAge: 22, maxAge: 99, emoji: '✨', when: () => true }, o));
+const hasJob = l => !!l.job;
+
+ev({ id: 'jobOffers', forced: true, emoji: '🎓', title: l => l.jobless && l.age > START_AGE ? 'Back on the market' : 'Graduation day',
+  when: l => !l.job,
+  text: l => 'You are ' + l.age + ', with ' + money(l.debt) + ' in loans and three offers on the table. Pick one, then negotiate the salary.',
+  gen: (l, rng) => shuffleR(rng, eligibleJobs(l).length >= 3 ? eligibleJobs(l) : JOBS).slice(0, 3),
+  choicesFrom: (l, rng, jobs) => jobs.map(j => ({ label: j.title, sub: j.desc, run: () => ({ scene: jobScene(l, j, rng) }) })) });
+
+ev({ id: 'moveOut', forced: true, emoji: '📦', title: () => 'Time to move out?', cd: 2,
+  when: l => l.housing === 'family' && l.age >= 23 && !!l.job,
+  text: l => 'Living with family is cheap, but it is cramping your style. Rent listings are waiting.',
+  choices: [
+    { label: 'Find an apartment', sub: 'Browse rentals and negotiate the rent', run: () => ({ text: 'You open the rental listings.', openShop: 'rent' }) },
+    { label: 'Stay another year', sub: 'Save money, lose some independence', run: l => { fx(l, { happy: -3, cash: 1800 }); return { text: 'You stay put and the savings account smiles.' }; } }
+  ] });
+
+ev({ id: 'realtor', emoji: '🔑', title: () => 'A realtor friend calls', w: 2, cd: 3, minAge: 24,
+  when: l => !l.home && l.cash >= 22000,
+  text: l => 'You have ' + money(l.cash) + ' saved. A friend in real estate says the market is moving and she has listings for you.',
+  choices: [
+    { label: 'Start house hunting', sub: 'See homes and negotiate the price', run: () => ({ text: 'You open the listings.', openShop: 'home' }) },
+    { label: 'Keep saving', sub: 'A bigger down payment means a better rate', run: l => { fx(l, { happy: 1 }); return { text: 'You nod, and keep stacking.' }; } }
+  ] });
+
+ev({ id: 'wedding', emoji: '💒', title: () => 'You are invited to a wedding', w: 2, cd: 4, minAge: 24, maxAge: 46,
+  text: l => 'A close friend is getting married and the invitation says "dress to impress". What do you wear?',
+  choices: [
+    { label: 'Shop for a new outfit', sub: 'Negotiate with a boutique', run: (l, rng) => {
+      const catalog = CATALOGS[l.style] || DRESSES;
+      const it = pick(rng, catalog.filter(i => i.rarity !== 'grail'));
+      const listing = { id: 'occ:' + it.name, cat: 'wardrobe', kind: 'shop', name: it.name, desc: it.desc, rarity: it.rarity, price: round5(it.base * l.priceIndex * 1.15), cp: makeCp('shop', rng), tag: 'Wedding season' };
+      l.flags.weddingBuy = true;
+      return { scene: purchaseScene(l, listing, rng) };
+    } },
+    { label: 'Wear something you own', sub: l => l.wardrobe.length ? 'Free, and you look great' : 'Your closet is a little thin', run: l => {
+      if (l.wardrobe.length) { fx(l, { happy: 5, charm: 1 }); return { text: 'You look great in something you already own. Zero cost, full confidence.' }; }
+      fx(l, { happy: -3 }); return { text: 'You wear something old. Nobody notices, but you do.' }; } },
+    { label: 'Send a gift and skip it', sub: 'Cheaper, lonelier', run: l => { fx(l, { cash: -100, happy: -4 }); return { text: 'You send a gift and spend the night on the couch.' }; } }
+  ] });
+
+ev({ id: 'drop', emoji: '🔥', title: l => l.style === 'dress' ? 'A designer drop is announced' : 'A limited sneaker drop is announced', w: 1.5, cd: 4, minAge: 23,
+  text: l => 'Word is a very limited piece lands this year. Everyone in the group chat is panicking. Do you chase it?',
+  choices: [
+    { label: 'Chase the drop', sub: 'A rare listing appears in the shop this year', run: l => { l.flags.dropAge = l.age; return { text: 'You set an alarm. The limited piece is now in the Shop for this year only.' }; } },
+    { label: 'Ignore the hype', sub: 'Save your money', run: l => { fx(l, { happy: 1 }); return { text: 'You scroll past it. Mostly.' }; } }
+  ] });
+
+ev({ id: 'sale', emoji: '🏷️', title: () => 'A private sale', w: 1.5, cd: 3, minAge: 22,
+  text: l => 'A boutique you follow is running a private sale this year. Everything in the shop is 10% off.',
+  choices: [
+    { label: 'Browse the shop', sub: 'Prices are 10% lower this year', run: l => { l.flags.saleAge = l.age; return { text: 'You bookmark the sale.', openShop: 'wardrobe' }; } },
+    { label: 'Not now', run: () => ({ text: 'You resist temptation. A little.' }) }
+  ] });
+
+ev({ id: 'bonus', emoji: '💸', title: () => 'A surprise bonus', w: 2, cd: 4, when: hasJob,
+  text: l => 'Your manager pulls you aside: a ' + money(l.salary * 0.04) + ' bonus for a strong quarter.',
+  choices: [
+    { label: 'Save it all', run: l => { fx(l, { cash: l.salary * 0.04 }); return { text: 'Into the savings account it goes.' }; } },
+    { label: 'Invest it', sub: 'Could grow, could shrink', run: (l, rng) => { const b = l.salary * 0.04; const win = rng() < 0.6; fx(l, { cash: b * (win ? 1.3 : 0.88) }); return { text: win ? 'The market was kind. It grew by 30%.' : 'The market was not kind. You lost 12%.' }; } },
+    { label: 'Treat yourself', run: l => { fx(l, { happy: 8, cash: l.salary * 0.015 }); return { text: 'A great dinner and a very good weekend.' }; } }
+  ] });
+
+ev({ id: 'medical', emoji: '🏥', title: () => 'Unexpected medical bill', w: 1.5, cd: 4,
+  text: l => 'An urgent-care visit turns into a ' + money(2200 * l.priceIndex) + ' bill.',
+  choices: [
+    { label: 'Pay it now', run: l => { fx(l, { cash: -2200 * l.priceIndex, health: 2 }); return { text: 'Ouch, but it is handled.' }; } },
+    { label: 'Payment plan', sub: 'Adds debt, dents your credit', run: l => { fx(l, { debt: 2200 * l.priceIndex, credit: -4 }); return { text: 'Twelve easy payments. Surprisingly not easy.' }; } },
+    { label: 'Ignore the letters', sub: 'Terrible idea', run: l => { fx(l, { credit: -28, happy: -6 }); return { text: 'The letters get louder. Your credit score drops.' }; } }
+  ] });
+
+ev({ id: 'friendLoan', emoji: '🤝', title: () => 'A friend asks to borrow $1,000', w: 1, cd: 5,
+  text: () => 'They promise to pay you back. They have said that before.',
+  choices: [
+    { label: 'Lend it', run: (l, rng) => { if (rng() < 0.5) { fx(l, { happy: 5 }); return { text: 'They paid you back in full, with a thank-you card.' }; } fx(l, { cash: -1000, happy: -3 }); return { text: 'The money vanishes, and so does their number.' }; } },
+    { label: 'Say no kindly', run: l => { fx(l, { happy: -1 }); return { text: 'Awkward, but your wallet is intact.' }; } }
+  ] });
+
+ev({ id: 'crypto', emoji: '📈', title: () => 'A coworker\'s hot investment tip', w: 1, cd: 5, when: hasJob,
+  text: () => '"Guaranteed to double," says the coworker, who also said that about the last three things.',
+  choices: [
+    { label: 'Put in $1,000', sub: 'Roughly a coin flip', run: (l, rng) => { if (rng() < 0.45) { fx(l, { cash: 1000, happy: 6 }); return { text: 'It doubled. You will never hear the end of it.' }; } fx(l, { cash: -1000, happy: -5 }); return { text: 'It went to zero. Of course it did.' }; } },
+    { label: 'Pass', run: l => { fx(l, { smarts: 1 }); return { text: 'You stay boring and solvent.' }; } }
+  ] });
+
+ev({ id: 'inheritance', emoji: '🕊️', title: () => 'A distant aunt left you something', w: 0.4, cd: 20, minAge: 26,
+  text: () => 'A letter from a lawyer. You did not even know you had this aunt.',
+  choices: [{ label: 'Open the envelope', run: (l, rng) => { const a = ri(rng, 5000, 20000) * l.priceIndex; fx(l, { cash: a, happy: 5 }); return { text: 'She left you ' + money(a) + '. You light a candle for her.' }; } }] });
+
+ev({ id: 'scam', emoji: '📱', title: () => 'A suspicious text', w: 1, cd: 5,
+  text: () => '"You have won a prize! Click here." The link looks like it was built in a hurry.',
+  choices: [
+    { label: 'Click it', run: l => { fx(l, { cash: -800, credit: -6, happy: -5 }); return { text: 'Your card gets drained. Lesson learned.' }; } },
+    { label: 'Report it', run: l => { fx(l, { smarts: 1 }); return { text: 'Delete, block, report. You feel quite smug.' }; } }
+  ] });
+
+ev({ id: 'taxRefund', emoji: '🧾', title: () => 'A tax refund', w: 1.5, cd: 4, when: hasJob,
+  text: () => 'The tax people owe you money for once.',
+  choices: [{ label: 'Collect it', run: (l, rng) => { const a = ri(rng, 800, 1900); fx(l, { cash: a }); return { text: 'You receive ' + money(a) + '.' }; } }] });
+
+ev({ id: 'carTrouble', emoji: '🔧', title: () => 'Car trouble', w: 2, cd: 3, when: l => !!l.car,
+  text: l => 'Your ' + l.car.name.toLowerCase() + ' starts making a sound like a dying whale.',
+  choices: [
+    { label: 'Repair it', sub: 'About $1,900', run: l => { fx(l, { cash: -1900 * l.priceIndex }); return { text: 'The mechanic shakes his head and fixes it.' }; } },
+    { label: 'Sell it as-is', sub: 'Negotiate the price', run: (l, rng) => ({ scene: sellScene(l, 'car', l.car, rng) }) }
+  ] });
+
+ev({ id: 'homeRepair', emoji: '🏚️', title: () => 'The house fights back', w: 2, cd: 3, when: l => !!l.home,
+  text: l => 'A pipe bursts in the middle of the night. Repairs could cost ' + money(l.home.value * 0.012) + '.',
+  choices: [
+    { label: 'Call a professional', run: l => { fx(l, { cash: -l.home.value * 0.012 }); return { text: 'Expensive, but it is done right.' }; } },
+    { label: 'Do it yourself', sub: 'Depends on how smart you are', run: (l, rng) => { if (rng() < 0.35 + l.stats.smarts / 200) { fx(l, { cash: -l.home.value * 0.004, smarts: 1, happy: 3 }); return { text: 'It worked! You are very proud of a very wet towel.' }; } fx(l, { cash: -l.home.value * 0.02, happy: -4 }); return { text: 'It got worse. A lot worse.' }; } }
+  ] });
+
+ev({ id: 'burnout', emoji: '🔥', title: () => 'You hit a wall', w: 2, cd: 4, when: l => hasJob(l) && l.stats.happy < 55,
+  text: () => 'You are exhausted. Everything at work feels the same shade of grey.',
+  choices: [
+    { label: 'Take a real vacation', sub: 'About $2,000', run: l => { fx(l, { cash: -2000 * l.priceIndex, happy: 16, health: 3 }); return { text: 'Two weeks of sunshine and zero emails.' }; } },
+    { label: 'Push through', run: l => { fx(l, { happy: -8, health: -5, perf: 6 }); return { text: 'You get a lot done and feel like a ghost.' }; } },
+    { label: 'See a therapist', sub: 'About $1,200', run: l => { fx(l, { cash: -1200, happy: 10, health: 3, smarts: 1 }); return { text: 'Turns out you needed to say it out loud.' }; } }
+  ] });
+
+ev({ id: 'promotion', emoji: '🚀', title: () => 'Your manager mentions a promotion', w: 3, cd: 3, when: l => hasJob(l) && l.yearsInRole >= (hasPerk(l, 'network') ? 1 : 2) && l.perf >= 55,
+  text: l => 'There is a senior role opening up and your name came up. Your current salary is ' + money(l.salary) + '.',
+  choices: [
+    { label: 'Negotiate the offer', sub: 'A chance to push for more', run: (l, rng) => { const s = raiseScene(l, rng); s.title = 'Promotion offer'; s.subject = 'Senior role'; s.start = Math.round(l.salary * 1.06); s.limit = s.start * rr(rng, 1.03, 1.09); s.current = s.start; s.meta.promo = true; return { scene: s }; } },
+    { label: 'Accept the first offer', run: l => { l.salary = Math.round(l.salary * 1.06); l.yearsInRole = 0; l.job = 'Senior ' + l.job; fx(l, { happy: 6, perf: 4 }); return { text: 'Promoted! Your salary is now ' + money(l.salary) + '.' }; } },
+    { label: 'Decline, stay put', run: l => { fx(l, { happy: 2 }); return { text: 'You enjoy your current role a little longer.' }; } }
+  ] });
+
+ev({ id: 'coworker', emoji: '😤', title: () => 'A coworker takes credit', w: 1.5, cd: 4, when: hasJob,
+  text: () => 'You see your idea on a slide with someone else\'s name on it.',
+  choices: [
+    { label: 'Confront them', run: (l, rng) => { if (rng() < 0.3 + effCharm(l) / 200) { fx(l, { happy: 4, perf: 3 }); return { text: 'They apologize and fix the slide.' }; } fx(l, { happy: -4, perf: -3 }); return { text: 'It gets awkward, fast.' }; } },
+    { label: 'Show your notes to your boss', run: (l, rng) => { if (rng() < 0.3 + l.stats.smarts / 200) { fx(l, { perf: 6, happy: 4 }); return { text: 'Your boss is impressed that you kept records.' }; } fx(l, { perf: -2 }); return { text: 'Your boss shrugs.' }; } },
+    { label: 'Let it go', run: l => { fx(l, { happy: -3 }); return { text: 'You swallow it. It tastes bad.' }; } }
+  ] });
+
+ev({ id: 'sideHustle', emoji: '🧵', title: () => 'A side hustle idea', w: 1.5, cd: 4, when: hasJob,
+  text: () => 'Friends keep telling you that you could make real money reselling things you find.',
+  choices: [
+    { label: 'Give it a real try', run: (l, rng) => { const ok = rng() < 0.35 + (l.stats.smarts + effCharm(l)) / 300; if (ok) { const a = ri(rng, 1500, 5000); fx(l, { cash: a, happy: 3, smarts: 1 }); return { text: 'It worked. You made ' + money(a) + ' on the side.' }; } fx(l, { cash: -400, happy: -2 }); return { text: 'It fizzled out. A few boxes are still in your hallway.' }; } },
+    { label: 'Skip it', run: l => { fx(l, { happy: 1 }); return { text: 'Your weekends stay yours.' }; } }
+  ] });
+
+ev({ id: 'trip', emoji: '🌴', title: () => 'Friends plan a trip', w: 2, cd: 3, minAge: 22, maxAge: 55,
+  text: () => 'Group chat: "WE ARE GOING." Flights are not cheap.',
+  choices: [
+    { label: 'Go', sub: 'About $1,800', run: l => { fx(l, { cash: -1800 * l.priceIndex, happy: 12, charm: 1 }); return { text: 'Unforgettable. Also, the photos are incredible.' }; } },
+    { label: 'Stay home', run: l => { fx(l, { happy: -3 }); return { text: 'You watch the trip unfold in twelve stories.' }; } }
+  ] });
+
+ev({ id: 'meet', emoji: '💘', title: () => 'You meet someone', w: 3, cd: 3, minAge: 22, maxAge: 44, when: l => !l.partner,
+  text: () => 'Eye contact across a room, an easy conversation, and a number scribbled on a receipt.',
+  choices: [
+    { label: 'Ask them out', run: (l, rng) => { if (rng() < 0.40 + effCharm(l) / 220) { l.partner = { name: pick(rng, ['Sam', 'Riley', 'Morgan', 'Jordan', 'Taylor', 'Casey']), years: 0, together: false, married: false, income: round5(ri(rng, 32000, 52000) * l.priceIndex) }; fx(l, { happy: 10 }); return { text: 'You are dating ' + l.partner.name + '. It is going suspiciously well.' }; } fx(l, { happy: -3 }); return { text: 'A polite no. You survive.' }; } },
+    { label: 'Stay in tonight', run: l => ({ text: 'The couch remains undefeated.' }) }
+  ] });
+
+ev({ id: 'moveIn', emoji: '🧳', title: l => 'Move in with ' + l.partner.name + '?', w: 3, cd: 3, when: l => l.partner && !l.partner.together && l.partner.years >= 1,
+  text: l => 'Two rents are painful, but two toothbrushes in one bathroom is a commitment.',
+  choices: [
+    { label: 'Move in together', sub: 'Shared costs, shared income', run: l => { l.partner.together = true; fx(l, { happy: 8 }); return { text: 'You merge books, plants, and one very opinionated cat.' }; } },
+    { label: 'Not yet', run: l => ({ text: 'You take it slow.' }) }
+  ] });
+
+ev({ id: 'proposal', emoji: '💍', title: l => 'Marry ' + l.partner.name + '?', w: 3, cd: 4, when: l => l.partner && l.partner.together && !l.partner.married && l.partner.years >= 2,
+  text: () => 'The question is in your pocket. So is a quote for a wedding venue.',
+  choices: [
+    { label: 'Big wedding', sub: 'About $12,000', run: l => { l.partner.married = true; fx(l, { cash: -12000 * l.priceIndex, happy: 14 }); return { text: 'The dance floor is a wonderful war zone.' }; } },
+    { label: 'Small ceremony', sub: 'About $3,000', run: l => { l.partner.married = true; fx(l, { cash: -3000 * l.priceIndex, happy: 10 }); return { text: 'Twelve people, great tacos, no regrets.' }; } },
+    { label: 'Not ready', run: l => { fx(l, { happy: -4 }); return { text: 'It is quiet in the car afterwards.' }; } }
+  ] });
+
+ev({ id: 'baby', emoji: '👶', title: () => 'A baby?', w: 2.5, cd: 4, maxAge: 40, when: l => l.partner && l.partner.married && l.kids < 2,
+  text: () => 'Kids cost around $7,500 a year each, and they are worth every cent, except the cents.',
+  choices: [
+    { label: 'Start a family', run: l => { l.kids += 1; fx(l, { happy: 12, health: -2 }); return { text: 'Welcome to the world, tiny boss.' }; } },
+    { label: 'Maybe later', run: () => ({ text: 'You decide to wait a while.' }) }
+  ] });
+
+ev({ id: 'breakup', emoji: '💔', title: l => 'Trouble with ' + l.partner.name, w: 1, cd: 6, when: l => l.partner && !l.partner.married,
+  text: () => 'You have been fighting about nothing and about everything.',
+  choices: [
+    { label: 'Work through it', run: (l, rng) => { if (rng() < 0.6) { fx(l, { happy: 5 }); return { text: 'You talk it out. It helps more than expected.' }; } l.partner = null; fx(l, { happy: -14 }); return { text: 'It did not work. It ends gently.' }; } },
+    { label: 'Walk away', run: l => { const n = l.partner.name; l.partner = null; fx(l, { happy: -10 }); return { text: 'You and ' + n + ' go your separate ways.' }; } }
+  ] });
+
+ev({ id: 'pet', emoji: '🐶', title: () => 'A very persuasive shelter pet', w: 1, cd: 99, when: l => !l.pet,
+  text: () => 'One look at those eyes and your resolve evaporates.',
+  choices: [
+    { label: 'Adopt', sub: 'About $600 plus $1,200 a year', run: l => { l.pet = true; fx(l, { cash: -600, happy: 10 }); return { text: 'They sleep on your pillow. You sleep on the edge.' }; } },
+    { label: 'Walk away quickly', run: l => ({ text: 'You leave with a heavy heart and a clean couch.' }) }
+  ] });
+
+ev({ id: 'match401', emoji: '🏦', title: () => 'Your employer offers a retirement match', w: 3, cd: 99, minAge: 23, when: l => hasJob(l) && !l.contributing,
+  text: l => 'Put in 6% of your salary and your employer adds another 3%. That is a free ' + money(l.salary * 0.03) + ' a year.',
+  choices: [
+    { label: 'Contribute 6%', sub: 'Money you will not touch for decades', run: l => { l.contributing = true; fx(l, { smarts: 1 }); return { text: 'Future-you sends a tiny thank-you note.' }; } },
+    { label: 'Not right now', run: () => ({ text: 'Future-you rolls their eyes.' }) }
+  ] });
+
+ev({ id: 'mentor', emoji: '🧭', title: () => 'A mentor takes you under their wing', w: 1.5, cd: 6, when: hasJob, maxAge: 40,
+  text: () => 'A senior colleague offers weekly coffee chats and honest feedback.',
+  choices: [
+    { label: 'Say yes', run: l => { fx(l, { perf: 8, smarts: 2, happy: 3 }); return { text: 'You learn more in a month than in a year.' }; } },
+    { label: 'Too busy', run: () => ({ text: 'The offer fades politely.' }) }
+  ] });
+
+ev({ id: 'layoff', emoji: '📦', title: () => 'Layoffs', w: 0.6, cd: 8, minAge: 24, when: l => hasJob(l) && l.perf < 62,
+  text: () => 'A calendar invite titled "Quick sync" is never a quick sync. Your team is cut.',
+  choices: [{ label: 'Clear your desk', run: l => { l.job = null; l.salary = 0; l.jobless = true; fx(l, { happy: -12, perf: -5 }); return { text: 'You are out of a job. You will find offers next year.' }; } }] });
+
+ev({ id: 'healthScare', emoji: '🩺', title: () => 'A health scare', w: 2, cd: 4, minAge: 36,
+  text: () => 'A routine check-up turns up something that needs watching.',
+  choices: [
+    { label: 'Follow the doctor\'s plan', sub: 'About $1,500', run: l => { fx(l, { cash: -1500 * l.priceIndex, health: 6 }); return { text: 'Early catch. Good news, mostly.' }; } },
+    { label: 'Ignore it', run: l => { fx(l, { health: -9, happy: -4 }); return { text: 'You really should not have ignored it.' }; } }
+  ] });
+
+ev({ id: 'parentsHelp', emoji: '🏡', title: () => 'Your parents offer help', w: 1.5, cd: 99, minAge: 25, maxAge: 36, when: l => !l.home,
+  text: () => 'They want to help with a down payment. It comes with advice. A lot of advice.',
+  choices: [
+    { label: 'Accept $10,000', run: (l) => { fx(l, { cash: 10000 * l.priceIndex, happy: 2 }); return { text: 'Gratitude, and a long phone call.' }; } },
+    { label: 'Decline politely', run: l => { fx(l, { happy: 3, smarts: 1 }); return { text: 'You do it yourself. Pride is a flavor too.' }; } }
+  ] });
+
+ev({ id: 'market', emoji: '📊', title: () => 'The housing market shifts', w: 1.5, cd: 5, minAge: 24,
+  text: () => 'The news is full of graphs and strong feelings.',
+  choices: [{ label: 'Read the headlines', run: (l, rng) => { const boom = rng() < 0.5; l.flags.market = (l.flags.market || 0) + 1; const f = boom ? 1.08 : 0.9; l.priceIndex *= f; if (l.home) l.home.value *= f; return { text: boom ? 'Prices are surging. Homeowners smile, buyers cry.' : 'Prices dip. Buyers smile, sellers sigh.' }; } }] });
+
+ev({ id: 'quiet1', emoji: '☀️', title: () => 'A good stretch', w: 2, cd: 2,
+  text: () => 'Nothing dramatic happens. You notice, with surprise, that you are okay.',
+  choices: [{ label: 'Enjoy it', run: l => { fx(l, { happy: 4 }); return { text: 'Sometimes quiet is the plot.' }; } }] });
+
+ev({ id: 'gym', emoji: '🏃', title: () => 'You finally join a gym', w: 2, cd: 4,
+  text: () => 'The membership costs $480 a year, and you have good intentions.',
+  choices: [
+    { label: 'Actually go', run: l => { fx(l, { cash: -480, health: 7, happy: 3 }); return { text: 'You go. Regularly. It is weird.' }; } },
+    { label: 'Pay and never go', run: l => { fx(l, { cash: -480, health: -1 }); return { text: 'A very expensive keyring tag.' }; } }
+  ] });
+
+// ---------- yearly engine ----------
+function incomeAndCosts(l) {
+  const idx = l.priceIndex, gross = l.salary;
+  const net = gross * (1 - taxRate(gross));
+  const pIncome = partnerActive(l) ? l.partner.income * (1 - taxRate(l.partner.income)) : 0;
+  const living = (19000 * idx + l.kids * 7500 * idx + (partnerActive(l) ? 8500 * idx : 0) + (l.pet ? 1200 : 0)) * (hasPerk(l, 'frugal') ? 0.92 : 1);
+  const side = hasPerk(l, 'hustle') ? 1800 * idx : 0;
+  let housing = 0;
+  if (l.housing === 'family') housing = 4200;
+  else if (l.housing === 'rent') housing = l.rent;
+  else if (l.home) housing = l.home.payment + l.home.value * 0.012;
+  const car = l.car ? 4500 * idx : 2000;
+  const debtPay = l.debt > 0 ? Math.min(l.debt, Math.max(2400, l.debt * 0.08)) : 0;
+  const ret = l.contributing ? gross * 0.06 : 0;
+  return { gross, net, pIncome, side, living, housing, car, debtPay, ret };
+}
+
+function ageUp(l, rng) {
+  const lines = [];
+  l.age += 1;
+  l.priceIndex *= 1.025;
+  if (l.partner) l.partner.years += 1;
+  l.yearsInRole += 1;
+  if (l.job) {
+    l.perf = clamp(l.perf + rr(rng, -3, 3) + (l.stats.happy > 60 ? 1 : -1) + (l.stats.smarts - 55) / 40, 15, 98);
+    const raise = 0.015 + l.perf / 100 * 0.015;
+    l.salary = Math.min(Math.round(l.salary * (1 + raise) / 100) * 100, Math.round(190000 * l.priceIndex));
+  }
+  const f = incomeAndCosts(l);
+  const interest = l.cash * 0.015;
+  const spend = f.living + f.housing + f.car + f.debtPay + f.ret;
+  const flow = f.net + f.pIncome + f.side + interest - spend;
+  const before = l.cash;
+  l.cash += flow;
+  l.debt = Math.max(0, (l.debt - f.debtPay) * 1.07);
+  if (l.contributing) l.retirement += f.gross * 0.09;
+  l.retirement = Math.max(0, l.retirement * (1 + 0.07 + (hasPerk(l, 'investor') ? 0.02 : 0) + rr(rng, -0.12, 0.14) * (hasPerk(l, 'investor') ? 0.6 : 1)));
+  if (l.cash < 0) { l.debt += -l.cash; l.cash = 0; l.credit = clamp(l.credit - 15, 400, 830); lines.push('⚠️ You ran short and borrowed to cover bills.'); }
+  else l.credit = clamp(l.credit + 3, 400, 830);
+  if (l.home) {
+    const interestPaid = l.home.loan * l.home.rate;
+    l.home.loan = Math.max(0, l.home.loan - (l.home.payment - interestPaid));
+    l.home.value *= 1 + 0.03 + rr(rng, -0.025, 0.045);
+  }
+  if (l.car) l.car.value *= 0.88;
+  l.wardrobe.forEach(i => { i.value = Math.max(10, i.value * (1 + i.appr + (hasPerk(l, 'collector') ? 0.02 : 0))); });
+  // stats drift
+  const comfort = clamp((flow / Math.max(20000, f.gross)) * 20, -12, 12);
+  const own = Math.min(10, l.wardrobe.reduce((s, i) => s + RARITY[i.rarity].happy, 0) * 0.4);
+  const target = 46 + comfort + (l.partner ? 7 : 0) + (l.home ? 4 : 0) + (l.car ? 2 : 0) + own + (l.kids ? 3 : 0) - (l.flags.overdraft ? 10 : 0);
+  l.stats.happy = clamp(l.stats.happy + (target - l.stats.happy) * 0.25 + rr(rng, -2, 2), 0, 100);
+  l.stats.health = clamp(l.stats.health - (l.age > 38 ? rr(rng, 0.8, 1.6) : rr(rng, 0, 0.7)) + (l.pet ? 0.3 : 0), 0, 100);
+  if (l.job) l.stats.smarts = clamp(l.stats.smarts + 0.3, 0, 100);
+  l.flags.overdraft = false;
+  l.lastYear = { net: flow, income: f.net + f.pIncome + f.side, spend, age: l.age };
+  l.curve[l.age] = Math.round(netWorth(l));
+  lines.unshift((flow >= 0 ? '💵 Saved ' : '📉 Lost ') + money(Math.abs(flow)) + ' this year (' + money(f.net + f.pIncome + f.side) + ' in, ' + money(spend) + ' out).');
+  // ending conditions
+  const mortality = l.age > 55 ? (l.age - 55) * 0.0025 * (l.stats.health < 40 ? 3 : 1) : 0;
+  if (l.stats.health <= 0 || rng() < mortality) { l.alive = false; l.deathCause = l.stats.health <= 0 ? 'health' : 'natural'; return { lines, ended: 'death', event: null }; }
+  if (l.age >= END_AGE) return { lines, ended: 'retire', event: null };
+  return { lines, ended: null, event: pickEvent(l, rng), talent: [30, 40, 50].indexOf(l.age) >= 0 };
+}
+
+function pickEvent(l, rng) {
+  const eligible = EVENTS.filter(e => l.age >= e.minAge && l.age <= e.maxAge && e.when(l) && (l.last[e.id] === undefined || l.age - l.last[e.id] >= e.cd));
+  const forced = eligible.find(e => e.forced);
+  if (forced) return instantiate(forced, l, rng);
+  if (rng() < 0.12) return null;
+  const pool = eligible.filter(e => !e.forced);
+  if (!pool.length) return null;
+  const total = pool.reduce((s, e) => s + e.w, 0);
+  let r = rng() * total;
+  for (const e of pool) { r -= e.w; if (r <= 0) return instantiate(e, l, rng); }
+  return instantiate(pool[0], l, rng);
+}
+function instantiate(e, l, rng) {
+  l.last[e.id] = l.age;
+  let choices;
+  if (e.choicesFrom) { const g = e.gen(l, rng); choices = e.choicesFrom(l, rng, g); }
+  else choices = e.choices.map(c => ({ label: c.label, sub: typeof c.sub === 'function' ? c.sub(l) : c.sub, run: c.run }));
+  return { id: e.id, emoji: e.emoji, title: e.title(l), text: e.text(l), choices };
+}
+
+// ---------- achievements & score ----------
+const ACHIEVEMENTS = [
+  { id: 'job', icon: '💼', name: 'First Paycheck', desc: 'Land your first job.', check: l => !!l.job || l.flags.hadJob },
+  { id: 'mover', icon: '📦', name: 'Moved Out', desc: 'Get a place of your own.', check: l => l.housing !== 'family' },
+  { id: 'h1', icon: '🪙', name: 'Haggler', desc: 'Save $1,000 through negotiation.', check: l => l.haggle.saved >= 1000 },
+  { id: 'h2', icon: '🏆', name: 'Master Haggler', desc: 'Save $40,000 through negotiation.', check: l => l.haggle.saved >= 40000 },
+  { id: 'owner', icon: '🏠', name: 'Homeowner', desc: 'Buy your first home.', check: l => !!l.home },
+  { id: 'debt', icon: '🧾', name: 'Debt Free', desc: 'Pay off every dollar of debt.', check: l => l.age > START_AGE && l.debt <= 0 },
+  { id: 'six', icon: '📈', name: 'Six Figures', desc: 'Earn $120,000 a year.', check: l => l.salary >= 120000 },
+  { id: 'closet', icon: '👗', name: 'Full Closet', desc: 'Own 10 wardrobe pieces.', check: l => l.wardrobe.length >= 10 },
+  { id: 'grail', icon: '💎', name: 'Grail Hunter', desc: 'Own a grail piece.', check: l => l.wardrobe.some(i => i.rarity === 'grail') },
+  { id: 'mil', icon: '🤑', name: 'Millionaire', desc: 'Reach $1,000,000 net worth.', check: l => netWorth(l) >= 1000000 },
+  { id: 'happy', icon: '😊', name: 'Genuinely Happy', desc: 'Reach 88 happiness.', check: l => l.stats.happy >= 88 },
+  { id: 'long', icon: '🎲', name: 'Against the Odds', desc: 'Win a deal using a long-shot tactic.', check: l => l.haggle.longshot >= 1 },
+  { id: 'flip', icon: '🔁', name: 'Flipper', desc: 'Sell something for more than you paid.', check: l => (l.flags.flipProfit || 0) > 0 },
+  { id: 'wed', icon: '💍', name: 'Happily Married', desc: 'Get married.', check: l => !!(l.partner && l.partner.married) },
+  { id: 'sg', icon: '👑', name: 'Perfect Read', desc: 'Land an S-grade deal.', check: l => l.haggle.grades.S >= 1 },
+  { id: 'fire', icon: '🔥', name: 'On Fire', desc: 'Chain a x4 combo in one negotiation.', check: l => l.haggle.maxCombo >= 4 },
+  { id: 'gam', icon: '🎰', name: 'Fortune Favors', desc: 'Win a go-for-broke push.', check: l => l.haggle.gambles >= 1 },
+  { id: 'pro', icon: '🏅', name: 'Pro Haggler', desc: 'Land 8 A-grade-or-better deals.', check: l => l.haggle.grades.S + l.haggle.grades.A >= 8 },
+  { id: 'loaded', icon: '🧩', name: 'Fully Loaded', desc: 'Hold 4 talents at once.', check: l => l.perks.length >= 4 },
+  { id: 'heirx', icon: '🏺', name: 'Family Heirloom', desc: 'Start a life with an heirloom.', check: l => l.wardrobe.some(i => i.heirloom) }
+];
+function checkAchievements(l) {
+  if (l.job) l.flags.hadJob = true;
+  const fresh = [];
+  ACHIEVEMENTS.forEach(a => { if (!l.achievements[a.id] && a.check(l)) { l.achievements[a.id] = l.age; fresh.push(a); } });
+  return fresh;
+}
+function finalScore(l) {
+  const nw = Math.max(0, netWorth(l));
+  const parts = [
+    { label: 'Net worth', pts: Math.round(nw / 2000) },
+    { label: 'Happiness', pts: Math.round(l.stats.happy * 10) },
+    { label: 'Collection', pts: Math.round(wardrobeValue(l) / 400) },
+    { label: 'Negotiation savings', pts: Math.round(l.haggle.saved / 100) },
+    { label: 'Deal mastery', pts: l.haggle.grades.S * 60 + l.haggle.grades.A * 30 + l.haggle.grades.B * 12 + l.haggle.grades.C * 4 },
+    { label: 'Achievements', pts: Object.keys(l.achievements).length * 50 }
+  ];
+  const total = parts.reduce((s, p) => s + p.pts, 0);
+  const tier = total >= 7500 ? 'S' : total >= 5600 ? 'A' : total >= 3800 ? 'B' : total >= 1500 ? 'C' : 'D';
+  return { parts, total, tier };
+}
+const goalProgress = l => {
+  if (!l.goal) return null;
+  const g = l.goal;
+  if (g.cat === 'home') { const need = g.price * 0.12 + 2000; return { label: g.name, have: l.cash, need, pct: clamp(l.cash / need, 0, 1) }; }
+  return { label: g.name, have: l.cash, need: g.price, pct: clamp(l.cash / g.price, 0, 1) };
+};
+
+
+// ================= v2: talents, quests, hot deals, daily, rank, heir =================
+const PERK_RAR = { common: { label: 'Common', color: '#7A8794', w: 55 }, rare: { label: 'Rare', color: '#3B7DD8', w: 35 }, legendary: { label: 'Legendary', color: '#E0A02E', w: 10 } };
+const PERKS = [
+  { id: 'silver', icon: '🗣️', name: 'Silver Tongue', rar: 'common', desc: 'Rapport tactics land 12% more often.' },
+  { id: 'numbers', icon: '📊', name: 'Spreadsheet Brain', rar: 'common', desc: 'Fact-based tactics land 12% more often.' },
+  { id: 'blunt', icon: '🎯', name: 'Straight Shooter', rar: 'common', desc: 'Simply asking lands 12% more often.' },
+  { id: 'closer', icon: '💼', name: 'Closer', rar: 'common', desc: 'Showing you are ready lands 12% more often.' },
+  { id: 'thrifty', icon: '🏷️', name: 'Thrifty', rar: 'common', desc: 'Everything you buy starts 3% cheaper.' },
+  { id: 'frugal', icon: '🥫', name: 'Frugal Living', rar: 'common', desc: 'Yearly living costs are 8% lower.' },
+  { id: 'patient', icon: '🧘', name: 'Patient Soul', rar: 'common', desc: 'Failed pushes cost 25% less patience.' },
+  { id: 'hustle', icon: '🧵', name: 'Side Hustle', rar: 'common', desc: 'Earn about $1,800 extra every year.' },
+  { id: 'poker', icon: '🃏', name: 'Poker Face', rar: 'rare', desc: 'Bluffs land more often and rarely end the talk.' },
+  { id: 'radar', icon: '📡', name: 'Bargain Radar', rar: 'rare', minRank: 2, desc: 'See which tactics each person loves and hates.' },
+  { id: 'lucky', icon: '🍀', name: 'Lucky Streak', rar: 'rare', minRank: 2, desc: 'The first failed push in every negotiation is re-rolled.' },
+  { id: 'gab', icon: '💬', name: 'Gift of Gab', rar: 'rare', minRank: 2, desc: 'One extra round in every negotiation.' },
+  { id: 'flipper', icon: '🔁', name: 'Flipper', rar: 'rare', minRank: 2, desc: 'Buyers open 8% higher when you sell.' },
+  { id: 'collector', icon: '💎', name: 'Collector\'s Eye', rar: 'rare', minRank: 3, desc: 'Your collection gains 2% a year and the closet fits 3 more.' },
+  { id: 'investor', icon: '📈', name: 'Index Fund Habit', rar: 'rare', minRank: 3, desc: 'Retirement grows 2% more a year with fewer crashes.' },
+  { id: 'wage', icon: '🦈', name: 'Salary Shark', rar: 'rare', minRank: 3, desc: 'Employers have more room on salary offers.' },
+  { id: 'network', icon: '🧭', name: 'Networker', rar: 'rare', minRank: 3, desc: 'Promotions arrive a year sooner.' },
+  { id: 'golden', icon: '👑', name: 'Golden Tongue', rar: 'legendary', minRank: 4, desc: '+8% on every tactic, and combos build much higher.' },
+  { id: 'oracle', icon: '🔮', name: 'Oracle', rar: 'legendary', minRank: 4, desc: 'See the exact odds of every move.' }
+];
+const perkById = id => PERKS.find(p => p.id === id);
+function rollPerks(l, rng, rank, n) {
+  let pool = PERKS.filter(p => !hasPerk(l, p.id) && (p.minRank || 1) <= rank);
+  const out = [];
+  while (out.length < n && pool.length) {
+    const rars = Object.keys(PERK_RAR).filter(r => pool.some(p => p.rar === r));
+    const tot = rars.reduce((s, r) => s + PERK_RAR[r].w, 0);
+    let x = rng() * tot, rar = rars[0];
+    for (const r of rars) { x -= PERK_RAR[r].w; if (x <= 0) { rar = r; break; } }
+    const cands = pool.filter(p => p.rar === rar);
+    const ch = cands[Math.floor(rng() * cands.length)];
+    out.push(ch); pool = pool.filter(p => p !== ch);
+  }
+  return out;
+}
+
+// ---------- quests (an endless chain of open loops) ----------
+const up = (v, n) => clamp(v / n, 0, 1);
+const gradeAplus = l => l.haggle.grades.S + l.haggle.grades.A;
+const QUESTS = [
+  { id: 'save500', icon: '🪙', text: 'Save $500 in one deal', pct: l => up(l.haggle.bestSave, 500), xp: 20 },
+  { id: 'cash5k', icon: '💵', text: 'Hold $5,000 in cash', pct: l => up(l.cash, 5000), xp: 20 },
+  { id: 'mover', icon: '📦', text: 'Move into your own place', pct: l => l.housing !== 'family' ? 1 : 0, xp: 25 },
+  { id: 'a1', icon: '🎯', text: 'Land an A-grade deal', pct: l => up(gradeAplus(l), 1), xp: 30, cash: 300 },
+  { id: 'closet3', icon: '🛍️', text: 'Own 3 collection pieces', pct: l => up(l.wardrobe.length, 3), xp: 25 },
+  { id: 'combo3', icon: '🔥', text: 'Chain a x3 combo', pct: l => up(l.haggle.maxCombo, 3), xp: 30 },
+  { id: 'rare', icon: '💠', text: 'Own a Rare or Grail piece', pct: l => l.wardrobe.some(i => i.rarity !== 'common') ? 1 : 0, xp: 30 },
+  { id: 'flip', icon: '🔁', text: 'Sell something for a profit', pct: l => (l.flags.flipProfit || 0) > 0 ? 1 : 0, xp: 35 },
+  { id: 'save2k', icon: '💰', text: 'Save $2,000 in one deal', pct: l => up(l.haggle.bestSave, 2000), xp: 40, cash: 500 },
+  { id: 'sal70', icon: '📈', text: 'Earn $70,000 a year', pct: l => up(l.salary, 70000), xp: 40, cash: 500 },
+  { id: 'debt10', icon: '🧾', text: 'Get debt under $10,000', pct: l => l.debt <= 10000 ? 1 : clamp((l.debt0 - l.debt) / Math.max(1, l.debt0 - 10000), 0, 0.99), xp: 35 },
+  { id: 'cash25k', icon: '🏦', text: 'Hold $25,000 in cash', pct: l => up(l.cash, 25000), xp: 40 },
+  { id: 'gamble', icon: '🎰', text: 'Win a go-for-broke push', pct: l => up(l.haggle.gambles, 1), xp: 40 },
+  { id: 'home', icon: '🏠', text: 'Buy your first home', pct: l => l.home ? 1 : 0, xp: 60, cash: 1000 },
+  { id: 'sgrade', icon: '👑', text: 'Land an S-grade deal', pct: l => up(l.haggle.grades.S, 1), xp: 60, cash: 1000 },
+  { id: 'grail', icon: '💎', text: 'Own a Grail piece', pct: l => l.wardrobe.some(i => i.rarity === 'grail') ? 1 : 0, xp: 50 },
+  { id: 'nw100', icon: '📊', text: 'Reach $100,000 net worth', pct: l => up(netWorth(l), 100000), xp: 50, cash: 1000 },
+  { id: 'closet8', icon: '🗄️', text: 'Own 8 collection pieces', pct: l => up(l.wardrobe.length, 8), xp: 50 },
+  { id: 'a5', icon: '🏅', text: 'Land 5 A-grade-or-better deals', pct: l => up(gradeAplus(l), 5), xp: 60 },
+  { id: 'wed', icon: '💍', text: 'Get married', pct: l => l.partner && l.partner.married ? 1 : 0, xp: 40 },
+  { id: 'sal100', icon: '🚀', text: 'Earn $100,000 a year', pct: l => up(l.salary, 100000), xp: 60, cash: 1500 },
+  { id: 'debt0', icon: '🎉', text: 'Become debt free', pct: l => l.age > START_AGE && l.debt <= 0 ? 1 : clamp((l.debt0 - l.debt) / Math.max(1, l.debt0), 0, 0.99), xp: 50 },
+  { id: 'nw500', icon: '💠', text: 'Reach $500,000 net worth', pct: l => up(netWorth(l), 500000), xp: 80, cash: 2000 },
+  { id: 'mil', icon: '🤑', text: 'Become a millionaire', pct: l => up(netWorth(l), 1000000), xp: 120, cash: 5000 }
+];
+const activeQuests = l => QUESTS.filter(q => !l.quests[q.id]).slice(0, 3);
+function checkQuests(l) {
+  const done = [];
+  for (let guard = 0; guard < 10; guard++) {
+    const q = activeQuests(l).find(x => x.pct(l) >= 1);
+    if (!q) break;
+    l.quests[q.id] = l.age; done.push(q);
+    if (q.cash) fx(l, { cash: q.cash });
+  }
+  return done;
+}
+
+// ---------- hot deals: expire when you age up ----------
+function hotListings(l) {
+  const rng = mulberry32((l.seed ^ hashStr('hot:' + l.age + ':' + (l.flags.market || 0))) >>> 0);
+  const idx = l.priceIndex, out = [];
+  const catalog = CATALOGS[l.style] || DRESSES;
+  const it = shuffleR(rng, catalog.filter(i => i.rarity !== 'common'))[0];
+  const market = round5(it.base * idx * rr(rng, 0.96, 1.10));
+  out.push({ id: 'w:' + it.name, hot: true, cat: 'wardrobe', kind: 'shop', name: it.name, desc: it.desc, rarity: it.rarity, market, price: round5(market * rr(rng, 0.80, 0.88)), tag: '🔥 Flash sale', floorRange: [0.90, 0.97], cp: makeCp('shop', rng) });
+  const top = l.wardrobe.filter(i => !i.heirloom || true).slice().sort((a, b) => b.value - a.value)[0];
+  if (top && top.value >= 150 && rng() < 0.75) {
+    out.push({ id: 's:' + top.name, hot: true, cat: 'sell', kind: 'sellhot', name: 'Collector wants your ' + top.name, desc: 'A serious buyer messaged you, unprompted. They want it badly, and they know you know.', refName: top.name, tag: '🔥 Buyer waiting', rarity: top.rarity });
+  } else if (!l.car && l.age >= 24 && rng() < 0.6) {
+    const c = shuffleR(rng, CARS.slice(0, 3))[0];
+    const m = round5(c.base * idx * rr(rng, 0.96, 1.06));
+    out.push({ id: 'c:' + c.name, hot: true, cat: 'car', kind: 'car', name: c.name, desc: c.desc, market: m, price: round5(m * rr(rng, 0.86, 0.92)), tag: '🔥 Month-end clearance', floorRange: [0.88, 0.95], cp: makeCp('car', rng) });
+  } else if (l.housing === 'rent') {
+    const r = shuffleR(rng, RENTALS)[0];
+    const m = round5(r.base * idx * rr(rng, 0.96, 1.06));
+    out.push({ id: 'r:' + r.name, hot: true, cat: 'rent', kind: 'rent', name: r.name, desc: r.desc, market: m, price: round5(m * rr(rng, 0.88, 0.94)), tag: '🔥 Landlord is desperate', floorRange: [0.92, 0.97], cp: makeCp('rent', rng) });
+  }
+  return out;
+}
+const hotKey = (l, li) => l.age + ':' + li.id;
+function hotAvailable(l) {
+  const used = l.flags.hotUsed || {};
+  return hotListings(l).filter(li => !used[hotKey(l, li)]);
+}
+function useHot(l, li) { l.flags.hotUsed = l.flags.hotUsed || {}; l.flags.hotUsed[hotKey(l, li)] = 1; }
+
+// ---------- daily deal ----------
+const DAILY_POOL = [
+  { kind: 'shop', title: 'Vintage leather jacket', desc: 'Butter-soft, broken in, and priced by someone who knows exactly what it is.', start: 480, floor: [0.66, 0.86] },
+  { kind: 'car', title: 'Used city scooter', desc: 'Low miles, one scratch, and a seller who swears it runs like a dream.', start: 3200, floor: [0.70, 0.88] },
+  { kind: 'rent', title: 'Rooftop studio', desc: 'Great light, tiny kitchen, and a landlord who really needs it filled this month.', start: 1450, floor: [0.80, 0.92], unit: 'mo' },
+  { kind: 'salary', title: 'Product Associate offer', desc: 'The team loves you. HR has a number. You have a better one.', start: 61000, ceil: [1.10, 1.22] },
+  { kind: 'sell', title: 'Selling: first-edition poster', desc: 'A collector found your listing and will not stop messaging.', start: 900, ceil: [1.12, 1.30] },
+  { kind: 'shop', title: 'Pair of concert tickets', desc: 'Sold out everywhere else. The seller knows. The seller always knows.', start: 360, floor: [0.64, 0.84] },
+  { kind: 'car', title: 'Weekend road bike', desc: 'Carbon frame, barely ridden, and a story about a knee injury.', start: 1800, floor: [0.70, 0.88] },
+  { kind: 'shop', title: 'Espresso machine', desc: 'Chrome, loud, and a suspiciously long list of included extras.', start: 640, floor: [0.68, 0.86] },
+  { kind: 'rent', title: 'Garden flat', desc: 'A tiny patch of grass and a very opinionated neighbour.', start: 1300, floor: [0.82, 0.93], unit: 'mo' },
+  { kind: 'salary', title: 'Design Lead offer', desc: 'They want you to start Monday. That is leverage.', start: 74000, ceil: [1.09, 1.21] }
+];
+function dailyNo(dateStr) { const d = new Date(dateStr + 'T00:00:00Z'); return Math.max(1, Math.round((d.getTime() - Date.UTC(2026, 0, 1)) / 86400000) + 1); }
+function dailyScene(dateStr) {
+  const seed = hashStr('daily:' + dateStr), rng = mulberry32(seed);
+  const l = newLife({ name: 'You', archetype: 'hustler', style: 'dress' }, seed);
+  const d = DAILY_POOL[seed % DAILY_POOL.length];
+  const scene = startScene(l, { kind: d.kind, title: d.title, subject: d.title, desc: d.desc, start: d.start, floor: d.floor, ceil: d.ceil, unit: d.unit || '', apply: () => ({ ok: true, kind: 'daily' }) }, rng);
+  return { life: l, scene, rng, no: dailyNo(dateStr) };
+}
+
+// ---------- rank (meta-progression across lives) ----------
+const RANK_TITLES = ['Window Shopper', 'Bargain Hunter', 'Haggler', 'Dealmaker', 'Closer', 'Negotiator', 'Shark', 'Mogul', 'Tycoon', 'Legend', 'Mythic', 'Grandmaster'];
+const rankXP = r => Math.round(110 * (r - 1) * (r - 1));
+const rankFromXP = xp => clamp(1 + Math.floor(Math.sqrt(Math.max(0, xp) / 110)), 1, 12);
+const RANK_UNLOCKS = {
+  2: 'Rare talents: Bargain Radar, Lucky Streak, Gift of Gab, Flipper',
+  3: 'The Insider archetype, plus Collector, Investor, Salary Shark and Networker talents',
+  4: 'Watches collection, plus Legendary talents',
+  5: 'The Trust-Funder archetype',
+  6: '+$2,000 starting cash in every life',
+  8: 'Four talents to choose from at every draft'
+};
+const rankBonusCash = r => r >= 6 ? 2000 : 0;
+const draftSize = r => r >= 8 ? 4 : 3;
+function nextUnlock(rank) { const k = Object.keys(RANK_UNLOCKS).map(Number).filter(n => n > rank).sort((a, b) => a - b)[0]; return k ? { rank: k, text: RANK_UNLOCKS[k] } : null; }
+
+// ---------- heir ----------
+function makeHeir(l) {
+  const nw = Math.max(0, netWorth(l));
+  const cash = clamp(Math.round(nw * 0.04 / 500) * 500, 1000, 40000);
+  const best = l.wardrobe.slice().sort((a, b) => b.value - a.value)[0] || null;
+  return { cash, heirloom: best ? { name: best.name, desc: best.desc, rarity: best.rarity, value: Math.round(best.value), appr: best.appr } : null };
+}
+const NW_MILESTONES = [25000, 50000, 100000, 250000, 500000, 1000000, 2000000];
+function lifeHeadline(l) {
+  const g = l.haggle.grades, nw = netWorth(l);
+  if (g.S >= 3) return 'The Negotiator Nobody Could Out-Talk';
+  if (nw >= 1000000) return 'The Self-Made Millionaire';
+  if (l.haggle.saved >= 60000) return 'The One Who Never Paid Retail';
+  if (l.wardrobe.filter(i => i.rarity === 'grail').length >= 2) return 'The Grail Collector';
+  if (l.stats.happy >= 85) return 'The Happiest Person In The Room';
+  if (l.retirement >= 400000) return 'The Quiet Compounder';
+  if (l.partner && l.partner.married && l.kids >= 1) return 'The Family Person Who Still Got A Discount';
+  if (l.debt <= 0 && nw > 150000) return 'The Debt-Free Survivor';
+  if (nw < 20000) return 'The Lovable Disaster';
+  return 'The Perfectly Decent Haggler';
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = { hashStr, mulberry32, clamp, money, ARCHETYPES, RARITY, DRESSES, SNEAKERS, HOMES, CARS, RENTALS, JOBS, EVENTS, ACHIEVEMENTS, START_AGE, END_AGE,
+    newLife, netWorth, wardrobeValue, effCharm, snap, fx, startScene, sceneOptions, sceneStep, sceneSaved, sceneMood, finishScene, closetCap, purchaseScene, shopListings, eligibleJobs,
+    jobScene, raiseScene, sellScene, ageUp, pickEvent, checkAchievements, finalScore, goalProgress, tacticChance, partnerActive, incomeAndCosts, LABELS, TACTIC_ICON,
+    WATCHES, CATALOGS, STYLE_META, PERKS, PERK_RAR, perkById, rollPerks, hasPerk, QUESTS, activeQuests, checkQuests, hotListings, hotAvailable, useHot, hotKey, DAILY_POOL, dailyScene, dailyNo,
+    rankXP, rankFromXP, RANK_TITLES, RANK_UNLOCKS, rankBonusCash, draftSize, nextUnlock, makeHeir, upgradeLife, sceneGamble, gambleOdds, sceneGrade, NW_MILESTONES, lifeHeadline, comboCap, GRADE_XP };
+}
+
+
+</script>
+<script>
+(function () {
+"use strict";
+const FAST = /[?&]fast=1/.test(location.search);
+const REDUCED = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+const $ = id => document.getElementById(id);
+const rng = Math.random;
+const short = n => { const a = Math.abs(n), s = n < 0 ? '-' : ''; return a >= 1e6 ? s + '$' + (a / 1e6).toFixed(2) + 'M' : a >= 1e4 ? s + '$' + (a / 1e3).toFixed(1) + 'k' : money(n); };
+const endp = t => /[?!.]$/.test(t) ? t : t + '.';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const sleep = ms => new Promise(r => setTimeout(r, FAST ? 0 : ms));
+const pad2 = n => String(n).padStart(2, "0");
+const dstr = d => d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+const dateOverride = (location.search.match(/[?&]date=(\d{4}-\d{2}-\d{2})/) || [])[1];
+const todayStr = () => dateOverride || dstr(new Date());
+const yesterdayStr = () => { const p = todayStr().split("-").map(Number); return dstr(new Date(p[0], p[1] - 1, p[2] - 1)); };
+
+// ---------- persistence ----------
+const SAVE_KEY = "lifedeal_v2", OLD_KEY = "lifedeal_v1";
+function loadSave() {
+  let sv = null;
+  try { const raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem(OLD_KEY); if (raw) sv = JSON.parse(raw); } catch (e) { sv = null; }
+  const base = { best: 0, lives: 0, ach: {}, name: "", arch: "hustler", style: "dress", life: null, xp: 0, collection: {}, galleryDone: {}, daily: { last: "", streak: 0, best: 0, results: {} }, bestCurve: null, sound: true };
+  const s = Object.assign(base, sv || {});
+  s.daily = Object.assign({ last: "", streak: 0, best: 0, results: {} }, s.daily || {});
+  if (s.life) { try { upgradeLife(s.life); } catch (e) { s.life = null; } }
+  return s;
+}
+let save = loadSave();
+function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) { /* storage unavailable */ } }
+function persistLife() { save.life = life; persist(); }
+
+// ---------- state ----------
+let life = null, busy = false, shopTab = "wardrobe", sheetTab = null, sceneCtx = null, shownNW = 0, galStyle = "dress", lastEnd = null;
+let creation = { arch: save.arch, style: save.style };
+const rankUps = [];
+const NAMES = ["Alex", "Jamie", "Sam", "Riley", "Quinn", "Maya", "Leo", "Nora", "Theo", "Zoe"];
+const rank = () => rankFromXP(save.xp);
+const styleEmoji = () => STYLE_META[(life && life.style) || "dress"].emoji;
+const styleWord = () => STYLE_META[(life && life.style) || "dress"].word;
+
+// ---------- sound & haptics ----------
+let actx = null;
+function ensureAudio() { if (actx) { if (actx.state === "suspended") actx.resume(); return; } try { const AC = window.AudioContext || window.webkitAudioContext; if (AC) actx = new AC(); } catch (e) { actx = null; } }
+function tone(f, d, type, vol, delay) {
+  if (!save.sound || !actx) return;
+  try {
+    const t = actx.currentTime + (delay || 0), o = actx.createOscillator(), g = actx.createGain();
+    o.type = type || "sine"; o.frequency.setValueAtTime(f, t);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.05, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + d + 0.03);
+  } catch (e) { /* audio unavailable */ }
+}
+const SFX = {
+  tap: () => tone(560, 0.05, "triangle", 0.04),
+  tick: () => tone(900, 0.03, "square", 0.02),
+  coin: () => { tone(880, 0.08, "square", 0.035); tone(1320, 0.14, "square", 0.035, 0.08); },
+  win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.16, "triangle", 0.06, i * 0.08)),
+  level: () => [392, 523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, 0.2, "triangle", 0.06, i * 0.09)),
+  fail: () => { tone(190, 0.22, "sawtooth", 0.04); tone(140, 0.25, "sawtooth", 0.04, 0.12); },
+  walk: () => { tone(330, 0.16, "sawtooth", 0.05); tone(220, 0.28, "sawtooth", 0.05, 0.15); },
+  combo: n => tone(420 + Math.min(n, 6) * 110, 0.13, "square", 0.04),
+  gamble: () => [300, 360, 430, 520].forEach((f, i) => tone(f, 0.09, "square", 0.03, i * 0.07))
+};
+function sfx(name, a) { if (FAST) return; ensureAudio(); const f = SFX[name]; if (f) f(a); }
+function buzz(p) { try { if (save.sound && !FAST && navigator.vibrate) navigator.vibrate(p); } catch (e) { /* no haptics */ } }
+function setSoundIcon() { $("soundBtn").textContent = save.sound ? "🔊" : "🔇"; }
+function toggleSound() { save.sound = !save.sound; persist(); setSoundIcon(); if (save.sound) { ensureAudio(); sfx("coin"); } if (sheetTab === "life") renderSheet(); }
+
+// ---------- ui helpers ----------
+function showView(id) { document.querySelectorAll(".view").forEach(v => v.classList.remove("active")); $(id).classList.add("active"); }
+function openOv(id) { $(id).classList.add("on"); }
+function closeOv(id) { $(id).classList.remove("on"); }
+const toastQ = []; let toastOn = false;
+function toast(msg) { toastQ.push(msg); if (!toastOn) nextToast(); }
+function nextToast() {
+  const m = toastQ.shift();
+  if (!m) { toastOn = false; return; }
+  toastOn = true;
+  const t = $("toast"); t.textContent = m; t.classList.remove("on"); void t.offsetWidth; t.classList.add("on");
+  setTimeout(() => { t.classList.remove("on"); setTimeout(nextToast, 100); }, FAST ? 120 : 2100);
+}
+function tweenNum(from, to, ms, fn) {
+  if (FAST || REDUCED || from === to) { fn(to); return; }
+  const t0 = performance.now();
+  (function step(now) { const t = Math.min(1, (now - t0) / ms); const e = 1 - Math.pow(1 - t, 3); fn(from + (to - from) * e); if (t < 1) requestAnimationFrame(step); })(t0);
+}
+function showModalHTML(html) { $("modal").innerHTML = html; openOv("ovModal"); }
+function el(html) { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
+function confetti(node, n) { if (FAST || REDUCED) return; const em = ["🎉", "✨", "💫", "🎊", "⭐"]; for (let i = 0; i < n; i++) { const s = document.createElement("span"); s.className = "confetti"; s.textContent = em[i % em.length]; s.style.left = (Math.random() * 100) + "%"; s.style.animationDelay = (Math.random() * 0.4) + "s"; node.appendChild(s); } }
+async function copyText(text) {
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch (e) { /* fall through */ }
+  try { const t = document.createElement("textarea"); t.value = text; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); const ok = document.execCommand("copy"); document.body.removeChild(t); return ok; } catch (e) { return false; }
+}
+async function shareText(text) {
+  const ok = await copyText(text);
+  toast(ok ? "📋 Copied. Paste it anywhere." : "Could not copy. Long-press to copy from the screen.");
+}
+
+// ---------- xp / rank ----------
+function gainXP(n) {
+  if (!n) return;
+  const before = rank(); save.xp += n; const after = rank();
+  for (let r = before + 1; r <= after; r++) rankUps.push(r);
+  persist();
+}
+function showRankUp(r) {
+  return new Promise(resolve => {
+    $("cele").className = "cele grail";
+    $("cele").innerHTML = `<div class="big">🏅</div><h2>Rank ${r}</h2><div class="sub"><b>${esc(RANK_TITLES[r - 1])}</b></div>${RANK_UNLOCKS[r] ? `<div class="kv"><div class="row"><span>🔓 Unlocked</span></div><div class="note">${esc(RANK_UNLOCKS[r])}</div></div>` : `<div class="note" style="margin-bottom:12px">Your legend grows. Keep climbing.</div>`}<button class="btn btn-primary" id="rkOk">Let's go</button>`;
+    openOv("ovCele"); confetti($("cele"), 26); sfx("level"); buzz([30, 40, 60]);
+    $("rkOk").addEventListener("click", () => { closeOv("ovCele"); resolve(); });
+  });
+}
+let flushing = false;
+async function flushRankUps() {
+  if (flushing) return; flushing = true;
+  while (rankUps.length) { await showRankUp(rankUps.shift()); }
+  flushing = false;
+  if ($("view-title").classList.contains("active")) renderTitle();
+}
+
+// ---------- title ----------
+function renderTitle() {
+  const rk = rank();
+  const cur = rankXP(rk), nxt = rankXP(rk + 1), pct = rk >= 12 ? 1 : clamp((save.xp - cur) / (nxt - cur), 0, 1), un = nextUnlock(rk);
+  $("rankCard").innerHTML = `<div class="rk-top"><div class="rk-badge">${rk}</div><div style="flex:1;min-width:0"><div class="rk-name">${esc(RANK_TITLES[rk - 1])}</div><div class="rk-sub">${save.xp} XP${rk < 12 ? ` · ${nxt - save.xp} to Rank ${rk + 1}` : " · max rank"}</div></div></div><div class="rk-bar"><i style="width:${pct * 100}%"></i></div>${un ? `<div class="rk-next">🔒 <b>Rank ${un.rank}:</b> ${esc(un.text)}</div>` : ""}`;
+  renderDaily();
+  if (ARCHETYPES[creation.arch].minRank > rk) creation.arch = "hustler";
+  if (STYLE_META[creation.style].minRank > rk) creation.style = "dress";
+  const ac = $("archChips"); ac.innerHTML = "";
+  Object.keys(ARCHETYPES).forEach(k => {
+    const a = ARCHETYPES[k], locked = a.minRank > rk;
+    const b = document.createElement("button");
+    b.className = "chip" + (creation.arch === k ? " sel" : "") + (locked ? " locked" : "");
+    b.innerHTML = `<span class="em">${locked ? "🔒" : a.emoji}</span><span>${a.label}</span><span class="ds">${locked ? `<span class="lk">Rank ${a.minRank}</span>` : a.desc}</span>`;
+    b.addEventListener("click", () => { if (locked) { toast(`🔒 Reach Rank ${a.minRank} to unlock ${a.label}`); return; } creation.arch = k; sfx("tap"); renderTitle(); });
+    ac.appendChild(b);
+  });
+  const sc = $("styleChips"); sc.innerHTML = "";
+  Object.keys(STYLE_META).forEach(k => {
+    const m = STYLE_META[k], locked = m.minRank > rk;
+    const b = document.createElement("button");
+    b.className = "chip" + (creation.style === k ? " sel" : "") + (locked ? " locked" : "");
+    b.innerHTML = `<span class="em">${locked ? "🔒" : m.emoji}</span><span>${m.word}</span><span class="ds">${locked ? `<span class="lk">Rank ${m.minRank}</span>` : m.desc}</span>`;
+    b.addEventListener("click", () => { if (locked) { toast(`🔒 Reach Rank ${m.minRank} to collect ${m.word}`); return; } creation.style = k; sfx("tap"); renderTitle(); });
+    sc.appendChild(b);
+  });
+  if (!$("nameInput").value) $("nameInput").value = save.name || NAMES[Math.floor(Math.random() * NAMES.length)];
+  const can = save.life && save.life.alive;
+  $("continueBtn").style.display = can ? "block" : "none";
+  if (can) $("continueBtn").textContent = `Continue ${save.life.name}'s life (age ${save.life.age})`;
+  const total = Object.keys(STYLE_META).reduce((s, k) => s + CATALOGS[k].length, 0);
+  $("galleryBtn").textContent = `📖 Collection ${Object.keys(save.collection).length}/${total}`;
+  $("trophyBtn").textContent = `🏆 Trophies ${Object.keys(save.ach).length}/${ACHIEVEMENTS.length}`;
+  $("miniStats").innerHTML = `<span>Lives lived <b>${save.lives}</b></span><span>Best score <b>${save.best}</b></span><span>Best streak <b>${save.daily.best}</b></span>`;
+  setSoundIcon();
+}
+
+// ---------- daily deal ----------
+function hoursToMidnight() { const n = new Date(); const m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1); const mins = Math.max(1, Math.round((m - n) / 60000)); return Math.floor(mins / 60) + "h " + (mins % 60) + "m"; }
+function dailyShare(r, st) {
+  return `Life Deal Daily #${r.no}${st > 1 ? ` · 🔥 ${st}-day streak` : ""}\n${r.title}\n${r.rolls || "🏃"}\n${r.walked ? "Walked away" : `Grade ${r.letter} · ${Math.round(r.ratio * 100)}% of the possible deal`}\nCan you beat it?`;
+}
+function renderDaily() {
+  const ds = todayStr(), d = save.daily, r = d.results[ds], D = dailyScene(ds);
+  const alive = d.last === ds || d.last === yesterdayStr();
+  const st = alive ? d.streak : 0;
+  const card = $("dailyCard");
+  if (!r) {
+    card.innerHTML = `<div class="dh"><span>Daily Deal #${D.no}</span><span class="streak">🔥 ${st} day${st === 1 ? "" : "s"}</span></div><div class="dt">${esc(D.scene.title)}</div><div class="dd">${esc(D.scene.desc)} Same deal for everyone, one shot.${st > 0 ? " Do not break your streak." : ""}</div><button class="btn" id="dailyBtn">Play today's deal</button>`;
+    $("dailyBtn").addEventListener("click", playDaily);
+  } else {
+    card.innerHTML = `<div class="dh"><span>Daily Deal #${r.no} · done</span><span class="streak">🔥 ${st} day${st === 1 ? "" : "s"}</span></div><div class="done"><div class="gl">${r.walked ? "✕" : r.letter}</div><div><div class="dt" style="font-size:16px">${esc(r.title)}</div><div class="dd">${r.walked ? "You walked away." : `${Math.round(r.ratio * 100)}% of the possible deal · ${esc(r.rolls || "")}`}<br>Next deal in ${hoursToMidnight()}.</div></div></div><div class="two"><button class="btn ghost" id="dailyShare">📋 Share</button><button class="btn ghost" id="dailyAgain">Details</button></div>`;
+    $("dailyShare").addEventListener("click", () => shareText(dailyShare(r, st)));
+    $("dailyAgain").addEventListener("click", () => showDailyResult(r, st));
+  }
+}
+function showDailyResult(r, st) {
+  const msg = r.walked ? "You walked away from the table." : { S: "Perfect read. Nothing left on the table.", A: "Sharp work. Barely any slack left.", B: "Solid deal. There was a little more in there.", C: "Decent, but they had more to give.", D: "They won this one. Tomorrow is a new deal." }[r.letter];
+  showModalHTML(`<div class="em">📅</div><h2>Daily Deal #${r.no}</h2><div class="gradebox"><div class="gl g-${r.walked ? "D" : r.letter}">${r.walked ? "✕" : r.letter}</div><div><div class="gt">${esc(msg)}</div><div class="gx">${r.walked ? "" : `${Math.round(r.ratio * 100)}% of the possible deal. Saved ${priceText({ unit: r.unit }, r.saved)}.`}</div><div class="rollrow">${esc(r.rolls || "")}</div></div></div><div class="xpline">🔥 ${st}-day streak · come back tomorrow</div><div class="choices"><button class="choice" id="dlShare"><div class="t">📋 Copy to share</div><div class="s">Challenge a friend to beat your grade</div></button><button class="choice" id="dlClose"><div class="t">Close</div></button></div>`);
+  $("dlShare").addEventListener("click", () => shareText(dailyShare(r, st)));
+  $("dlClose").addEventListener("click", () => { closeOv("ovModal"); renderTitle(); flushRankUps(); });
+}
+async function playDaily() {
+  const ds = todayStr();
+  if (save.daily.results[ds]) return;
+  ensureAudio();
+  const D = dailyScene(ds);
+  const out = await runScene(D.scene, { life: D.life, rng: D.rng, daily: true });
+  const walked = !out || !out.ok;
+  const g = walked ? { letter: "D", ratio: 0 } : out.grade;
+  const dd = save.daily, y = yesterdayStr();
+  dd.streak = dd.last === y ? dd.streak + 1 : (dd.last === ds ? dd.streak : 1);
+  dd.last = ds; dd.best = Math.max(dd.best, dd.streak);
+  const r = { no: D.no, title: D.scene.title, unit: D.scene.unit, letter: g.letter, ratio: g.ratio, rolls: D.scene.rolls.join(""), saved: walked ? 0 : Math.round(sceneSaved(D.scene)), walked };
+  dd.results[ds] = r;
+  Object.keys(dd.results).sort().slice(0, -12).forEach(k => delete dd.results[k]);
+  gainXP(40 + Math.min(dd.streak, 7) * 5 + GRADE_XP[g.letter]);
+  persist(); renderTitle(); sfx(walked ? "walk" : "win");
+  showDailyResult(r, dd.streak);
+}
+
+// ---------- start / continue ----------
+function startLife(heir) {
+  ensureAudio();
+  const name = heir ? ((lastEnd ? lastEnd.name : "Alex").replace(/ Jr\.$/, "").slice(0, 10) + " Jr.") : (($("nameInput").value || "Alex").trim().slice(0, 14) || "Alex");
+  const archetype = heir ? save.arch : creation.arch, style = heir ? save.style : creation.style;
+  const first = save.lives === 0;
+  save.name = heir ? save.name : name; save.arch = archetype; save.style = style; save.lives += 1;
+  life = newLife({ name, archetype, style, heir: heir || null, bonusCash: rankBonusCash(rank()), beginner: first }, (Math.random() * 4294967296) >>> 0);
+  $("feed").innerHTML = "";
+  feedItem(`<b>${heir ? `${esc(name)} takes over.` : `Welcome, ${esc(name)}.`}</b> You are ${life.age}, freshly graduated, with ${money(life.debt)} in student loans and ${money(life.cash)} to your name.${heir && heir.heirloom ? ` Family left you <b>${esc(heir.heirloom.name)}</b>.` : ""}`, "gold");
+  feedItem(`Tap <b>AGE UP</b> to live a year. Haggle for every dollar. The better you read people, the more you keep.`, "");
+  showView("view-game");
+  renderHead(true);
+  persistLife();
+  (async () => {
+    busy = true; setDock();
+    await draftPerks("Pick a starting talent", "This shapes how you play this life. You will get more picks at 30, 40 and 50.");
+    const ev = pickEvent(life, rng); if (ev) await presentEvent(ev);
+    afterAction(); await flushRankUps(); busy = false; setDock();
+  })();
+}
+function continueLife() {
+  ensureAudio();
+  life = save.life; upgradeLife(life);
+  $("feed").innerHTML = "";
+  feedItem(`<b>Welcome back, ${esc(life.name)}.</b> Age ${life.age}. Net worth ${money(netWorth(life))}.`, "gold");
+  const hot = hotAvailable(life).length;
+  if (hot) feedItem(`🔥 <b>${hot} hot deal${hot > 1 ? "s" : ""}</b> still waiting in the Shop this year.`, "gold");
+  showView("view-game"); renderHead(true);
+}
+
+// ---------- talents ----------
+function draftPerks(title, sub) {
+  return new Promise(resolve => {
+    const rk = rank(), n = draftSize(rk);
+    let offer = rollPerks(life, rng, rk, n);
+    if (!offer.length) { resolve(); return; }
+    function paint() {
+      showModalHTML(`<div class="em">🧩</div><h2>${esc(title)}</h2><p>${esc(sub)}</p><div class="draft" id="dr"></div>${life.flags.rerolls > 0 ? `<button class="btn btn-ghost" id="drRe" style="margin-top:10px">🎲 Reroll offers (${life.flags.rerolls} left)</button>` : ""}`);
+      offer.forEach(p => {
+        const R = PERK_RAR[p.rar], b = document.createElement("button");
+        b.className = "dcard " + p.rar; b.style.setProperty("--rc", R.color);
+        b.innerHTML = `<span class="e">${p.icon}</span><span><div class="r">${R.label}</div><div class="n">${esc(p.name)}</div><div class="d">${esc(p.desc)}</div></span>`;
+        b.addEventListener("click", () => {
+          life.perks.push(p.id); sfx(p.rar === "legendary" ? "level" : "win"); buzz(25);
+          closeOv("ovModal");
+          feedItem(`${p.icon} <b>Talent gained: ${esc(p.name)}.</b> ${esc(p.desc)}`, "gold");
+          persistLife(); renderHead(); resolve();
+        });
+        $("dr").appendChild(b);
+      });
+      const re = $("drRe");
+      if (re) re.addEventListener("click", () => { life.flags.rerolls -= 1; offer = rollPerks(life, rng, rk, n); sfx("tap"); paint(); });
+    }
+    paint();
+  });
+}
+
+// ---------- header ----------
+const BARS = [["health", "❤️", "var(--health)"], ["happy", "😊", "var(--happy)"], ["smarts", "🧠", "var(--smarts)"], ["charm", "✨", "var(--charm)"]];
+function renderQuest() {
+  const qs = activeQuests(life), node = $("questStrip");
+  if (!qs.length) { node.classList.remove("on"); return; }
+  const best = qs.slice().sort((a, b) => b.pct(life) - a.pct(life))[0], p = best.pct(life);
+  node.classList.add("on"); node.classList.toggle("near", p >= 0.7);
+  node.innerHTML = `<div class="qt"><span>${best.icon} <b>${esc(best.text)}</b></span><span>${Math.round(p * 100)}% · +${best.xp} XP${qs.length > 1 ? ` · ${qs.length - 1} more` : ""}</span></div><div class="qb"><div class="qf" style="width:${p * 100}%"></div></div>`;
+}
+function renderHead(first) {
+  $("avatar").textContent = life.partner && life.partner.married ? "💍" : (ARCHETYPES[life.archetype].emoji);
+  $("whoName").textContent = life.name;
+  const job = life.job ? life.job : "Between jobs";
+  $("whoSub").textContent = `Age ${life.age} · ${job}`;
+  const nw = netWorth(life);
+  tweenNum(first ? nw : shownNW, nw, 600, v => { $("nwVal").textContent = money(v); });
+  shownNW = nw;
+  $("cashVal").textContent = `${short(life.cash)} cash${life.debt > 0 ? " · " + short(life.debt) + " debt" : ""}`;
+  $("bars").innerHTML = BARS.map(([k, ic, col]) => {
+    const v = k === "charm" ? effCharm(life) : life.stats[k];
+    return `<div class="bar-row"><span class="ic">${ic}</span><div class="bar-track"><div class="bar-fill" style="width:${clamp(v, 0, 100)}%;background:${col}"></div></div><b>${Math.round(v)}</b></div>`;
+  }).join("");
+  const pr = $("perkRow");
+  pr.classList.toggle("on", life.perks.length > 0);
+  pr.innerHTML = life.perks.map(id => { const p = perkById(id), R = PERK_RAR[p.rar]; return `<button class="pk ${p.rar}" style="--rc:${R.color}" data-pk="${id}" aria-label="${esc(p.name)}">${p.icon}</button>`; }).join("");
+  pr.querySelectorAll(".pk").forEach(b => b.addEventListener("click", () => { const p = perkById(b.dataset.pk); toast(`${p.icon} ${p.name}: ${p.desc}`); }));
+  renderQuest();
+  const gp = goalProgress(life), gs = $("goalStrip");
+  if (gp && !(life.goal.cat === "home" && life.home)) {
+    gs.classList.add("on");
+    gs.innerHTML = `⭐ Goal: <b>${esc(gp.label)}</b> — ${money(gp.have)} / ${money(gp.need)}${life.goal.cat === "home" ? " for down payment" : ""}<div class="gb"><div class="gf" style="width:${gp.pct * 100}%"></div></div>`;
+  } else { gs.classList.remove("on"); gs.innerHTML = ""; }
+  const hot = life.alive ? hotAvailable(life).length : 0, dot = $("shopDot");
+  dot.textContent = hot; dot.classList.toggle("on", hot > 0);
+  $("dAge").innerHTML = `<span class="ic">＋</span>AGE UP · ${life.age + 1}`;
+}
+function setDock() { ["dCareer", "dShop", "dAge", "dAssets", "dLife"].forEach(id => { $(id).disabled = busy; }); }
+
+// ---------- feed ----------
+function feedItem(html, cls) {
+  const d = document.createElement("div"); d.className = "fi " + (cls || ""); d.innerHTML = html; $("feed").appendChild(d);
+  const f = $("feed"); f.scrollTop = f.scrollHeight;
+}
+function feedYear() {
+  const d = document.createElement("div"); d.className = "yr";
+  d.innerHTML = `<span class="a">Age ${life.age}</span><span class="w">Net worth ${money(netWorth(life))}</span>`;
+  $("feed").appendChild(d);
+}
+function paceItem() {
+  const bc = save.bestCurve;
+  if (!bc || life.age < 24) return;
+  const b = bc[life.age];
+  if (b === undefined) return;
+  const d = netWorth(life) - b;
+  if (Math.abs(d) < 500) return;
+  feedItem(d > 0 ? `📈 <b>${short(d)} ahead</b> of your best life at this age.` : `📉 <b>${short(-d)} behind</b> your best life at this age.`, "pace " + (d > 0 ? "up" : "down"));
+}
+function chipsFor(before) {
+  const now = snap(life), out = [];
+  [["health", "❤️"], ["happy", "😊"], ["smarts", "🧠"], ["charm", "✨"]].forEach(([k, ic]) => { const d = Math.round(now[k] - before[k]); if (d) out.push([`${ic} ${d > 0 ? "+" : ""}${d}`, d > 0]); });
+  const dc = Math.round(now.cash - before.cash); if (dc) out.push([`💵 ${dc > 0 ? "+" : "-"}${money(Math.abs(dc))}`, dc > 0]);
+  const dd = Math.round(now.debt - before.debt); if (dd) out.push([`🧾 debt ${dd > 0 ? "+" : "-"}${money(Math.abs(dd))}`, dd < 0]);
+  return out.map(([t, pos]) => `<span class="dchip ${pos ? "pos" : "neg"}">${t}</span>`).join("");
+}
+
+// ---------- events ----------
+function presentEvent(ev) {
+  return new Promise(resolve => {
+    showModalHTML(`<div class="em">${ev.emoji}</div><h2>${esc(ev.title)}</h2><p>${esc(ev.text)}</p><div class="choices" id="evChoices"></div>`);
+    const box = $("evChoices");
+    ev.choices.forEach(c => {
+      const b = document.createElement("button"); b.className = "choice";
+      b.innerHTML = `<div class="t">${esc(c.label)}</div>${c.sub ? `<div class="s">${esc(c.sub)}</div>` : ""}`;
+      b.addEventListener("click", async () => {
+        sfx("tap");
+        const before = snap(life);
+        const res = c.run(life, rng) || {};
+        if (res.scene) {
+          closeOv("ovModal");
+          const r = await runScene(res.scene);
+          if (r && r.walked && ev.id === "jobOffers") feedItem("You walked away from the offer. Rent does not wait, though.", "bad");
+          resolve(); return;
+        }
+        feedItem(`${ev.emoji} <b>${esc(endp(ev.title))}</b> ${esc(res.text || "")}`, "");
+        showModalHTML(`<div class="em">${ev.emoji}</div><h2>${esc(ev.title)}</h2><p>${esc(res.text || "")}</p><div class="delta">${chipsFor(before)}</div><button class="btn btn-primary" id="evOk">Continue</button>`);
+        $("evOk").addEventListener("click", () => {
+          closeOv("ovModal"); renderHead();
+          if (res.openShop) { shopTab = res.openShop; openSheet("shop"); }
+          resolve();
+        });
+      });
+      box.appendChild(b);
+    });
+  });
+}
+
+// ---------- scenes (negotiation) ----------
+function runScene(scene, o) {
+  o = o || {};
+  return new Promise(resolve => {
+    sceneCtx = { scene, resolve, last: "", drop: false, delta: 0, shakeSay: false, shakeAll: false, locked: false, L: o.life || life, rng: o.rng || rng, daily: !!o.daily };
+    renderScene();
+    openOv("ovScene"); sfx("tap");
+  });
+}
+function priceText(scene, v) { return scene.unit === "mo" ? `${money(v)}/mo` : money(v); }
+const GRADE_TXT = { S: "Perfect read", A: "Sharp deal", B: "Solid deal", C: "Decent, not great", D: "They had your number" };
+function renderScene() {
+  const ctx = sceneCtx, scene = ctx.scene, L = ctx.L;
+  const finalNow = scene.final || scene.over;
+  const saved = sceneSaved(scene);
+  const opts = sceneOptions(L, scene);
+  const radar = hasPerk(L, "radar"), oracle = hasPerk(L, "oracle");
+  const kindLabel = { shop: "Price", car: "Price", home: "Asking price", rent: "Rent", salary: "Offer", sell: "Their offer" }[scene.kind];
+  const goodWord = scene.dir === "down" ? "Saved" : "Gained";
+  const pat = clamp(scene.patience, 0, 100), patCol = pat > 66 ? "var(--good)" : pat > 33 ? "var(--gold)" : "var(--bad)";
+  const nextMult = Math.round(Math.min(comboCap(L), 0.15 * scene.combo) * 100);
+  const comboHtml = scene.combo >= 2 ? `<span class="combo ${scene.combo >= 4 ? "c4" : scene.combo >= 3 ? "c3" : ""}">🔥 x${scene.combo} combo${nextMult ? ` · +${nextMult}% next` : ""}</span>` : (scene.combo === 1 ? `<span class="note">One more win starts a combo</span>` : `<span class="note"></span>`);
+  const canGamble = scene.final && !scene.over && !scene.gambled;
+  const gp = canGamble ? gambleOdds(L, scene) : 0;
+  $("scene").innerHTML = `
+    <div class="scene-body">
+      <div class="cp"><div class="big">${scene.cp.emoji}</div><div><div class="nm">${esc(scene.cp.name)}</div><div class="note">${esc(scene.title)}</div></div><div class="mood">${sceneMood(scene)}</div></div>
+      <div class="say" id="scSay">${esc(ctx.last || scene.desc)}</div>
+      <div class="card deal"><div class="st">${kindLabel}</div>
+        <div><span class="pr ${ctx.drop ? "drop" : ""}" id="scPrice">${priceText(scene, Math.round(scene.current))}</span>${saved > 0 ? `<span class="was">${priceText(scene, scene.start)}</span>` : ""}</div>
+        <div class="sv">${saved >= 1 ? `${goodWord} ${priceText(scene, Math.round(saved))}` : ""}</div></div>
+      <div class="pat ${pat <= 33 ? "low" : ""}"><span>Patience</span><div class="pb"><i style="width:${pat}%;background:${patCol}"></i></div><span class="rollrow">${scene.rolls.join("")}</span></div>
+      <div class="strip">${comboHtml}<span class="rounds" style="text-align:right">${finalNow ? (scene.over ? "They have walked out." : "Final offer.") : `Round ${scene.round + 1} of ${scene.maxRounds}`}</span></div>
+      <div class="read"><b>Read the room:</b><br>👍 ${esc(scene.cp.clueLike)}<br>👎 ${esc(scene.cp.clueDislike)}</div>
+      ${canGamble ? `<div class="gamble"><div class="gt">🎰 Go for broke?</div><div class="gs">One last push for a much better number. About <b>${Math.round(gp * 100)}%</b> they blink. Otherwise they walk and the deal is gone.</div><button id="scGamble">Push my luck</button></div>` : ""}
+      <div class="opts">${opts.map(o => {
+        const trait = scene.cp.likes === o.id ? "liked" : scene.cp.dislikes === o.id ? "disl" : "";
+        const mark = radar && trait ? `<span class="mk">${trait === "liked" ? "👍" : "👎"}</span>` : "";
+        const hint = oracle ? `${Math.round(tacticChance(L, scene, o.id, true) * 100)}%` : o.hint;
+        const hc = oracle ? (tacticChance(L, scene, o.id, true) >= 0.62 ? "g" : tacticChance(L, scene, o.id, true) >= 0.45 ? "e" : "l") : (o.hint === "Good odds" ? "g" : o.hint === "Even odds" ? "e" : "l");
+        return `<button class="opt ${radar ? trait : ""}" data-t="${o.id}" ${finalNow ? "disabled" : ""}><span class="ic">${o.icon}</span><span class="lb">${esc(o.label)}</span>${mark}<span class="ht ${hc}">${hint}</span></button>`;
+      }).join("")}</div>
+    </div>
+    <div class="scene-foot"><button class="btn btn-ghost" id="scWalk">Walk away</button><button class="btn btn-primary" id="scAccept" ${scene.over ? "disabled" : ""}>Accept ${priceText(scene, Math.round(scene.current))}</button></div>`;
+  if (ctx.drop && ctx.delta >= 1) { const f = document.createElement("div"); f.className = "float"; f.textContent = (scene.dir === "down" ? "-" : "+") + priceText(scene, Math.round(ctx.delta)); $("scene").querySelector(".deal").appendChild(f); }
+  if (ctx.shakeSay) $("scSay").classList.add("shake");
+  if (ctx.shakeAll && !REDUCED) { $("scene").classList.remove("shake"); void $("scene").offsetWidth; $("scene").classList.add("shake"); }
+  ctx.drop = false; ctx.delta = 0; ctx.shakeSay = false; ctx.shakeAll = false;
+  $("scene").querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => sceneTactic(b.dataset.t)));
+  $("scWalk").addEventListener("click", () => { if (sceneCtx && !sceneCtx.locked) { sceneCtx.locked = true; endScene({ ok: false, walked: true }); } });
+  $("scAccept").addEventListener("click", sceneAccept);
+  const g = $("scGamble"); if (g) g.addEventListener("click", sceneGambleClick);
+}
+function sceneTactic(id) {
+  const ctx = sceneCtx;
+  if (!ctx || ctx.locked) return;
+  const { scene, L } = ctx;
+  const r = sceneStep(L, scene, id, ctx.rng);
+  if (!r) return;
+  ctx.last = `${TACTIC_ICON[id]} ${r.text}${r.lucky ? " 🍀 Lucky Streak saved that one." : ""}`;
+  ctx.drop = r.ok; ctx.delta = r.ok ? r.delta : 0; ctx.shakeSay = !r.ok;
+  if (r.ok) { sfx("combo", r.combo); buzz(15); } else { sfx("fail"); buzz([30, 40, 30]); }
+  if (scene.over) { sfx("walk"); ctx.shakeAll = true; buzz(90); }
+  renderScene();
+}
+function sceneGambleClick() {
+  const ctx = sceneCtx;
+  if (!ctx || ctx.locked) return;
+  const { scene, L } = ctx;
+  sfx("gamble");
+  const r = sceneGamble(L, scene, ctx.rng);
+  if (!r) return;
+  ctx.last = `🎰 ${r.text}`;
+  const go = () => {
+    if (!sceneCtx) return;
+    ctx.drop = r.ok; ctx.delta = r.ok ? r.delta : 0; ctx.shakeAll = !r.ok; ctx.shakeSay = !r.ok;
+    if (r.ok) { sfx("win"); buzz([20, 30, 20]); } else { sfx("walk"); buzz(100); }
+    renderScene();
+  };
+  if (FAST) go(); else setTimeout(go, 650);
+}
+async function sceneAccept() {
+  const ctx = sceneCtx;
+  if (!ctx || ctx.locked) return;
+  ctx.locked = true;
+  const { scene, L } = ctx;
+  const res = finishScene(L, scene, true, ctx.rng, {});
+  if (res.ok) {
+    if (ctx.daily) { endScene(res); return; }
+    await celebrate(res, scene); endScene(res); return;
+  }
+  await handleFail(res, scene);
+  if (sceneCtx === ctx) ctx.locked = false;
+}
+function handleFail(res, scene) {
+  return new Promise(resolve => {
+    let msg = "", btns = [];
+    if (res.reason === "funds") {
+      msg = `You are ${money(res.shortfall)} short for this one.`;
+      if (res.canCredit) btns.push(["Put it on credit", "Adds debt with interest and dents your credit score", async () => { const r2 = finishScene(life, scene, true, rng, { credit: true }); closeOv("ovModal"); if (r2.ok) { await celebrate(r2, scene); endScene(r2); } resolve(); }]);
+    } else if (res.reason === "down") msg = `The bank wants a down payment plus closing costs. You need about ${money(res.need)} in cash.`;
+    else if (res.reason === "dti") msg = `The lender says the payment (about ${money(res.pay)}/yr) is too high for your income.`;
+    else if (res.reason === "full") msg = `Your closet is full (${res.cap} pieces). Sell something first, or move somewhere bigger.`;
+    btns.push(["Back to the deal", "Keep negotiating", () => { closeOv("ovModal"); resolve(); }]);
+    btns.push(["Walk away", "", () => { closeOv("ovModal"); endScene({ ok: false, walked: true }); resolve(); }]);
+    showModalHTML(`<div class="em">⚠️</div><h2>Not quite</h2><p>${esc(msg)}</p><div class="choices" id="failChoices"></div>`);
+    btns.forEach(([t, s, fn]) => { const b = document.createElement("button"); b.className = "choice"; b.innerHTML = `<div class="t">${esc(t)}</div>${s ? `<div class="s">${esc(s)}</div>` : ""}`; b.addEventListener("click", fn); $("failChoices").appendChild(b); });
+  });
+}
+function endScene(res) {
+  closeOv("ovScene");
+  const ctx = sceneCtx; sceneCtx = null;
+  if (ctx) { if (!ctx.daily && ctx.scene.meta && ctx.scene.meta.raise) life.raiseAskAge = life.age; ctx.resolve(res); }
+  if (ctx && ctx.daily) return;
+  renderHead(); afterAction(); persistLife();
+  if ($("ovSheet").classList.contains("on")) renderSheet();
+  flushRankUps();
+}
+
+// ---------- collection ----------
+function discover(it) {
+  const key = life.style + ":" + it.name;
+  if (save.collection[key]) return false;
+  save.collection[key] = { r: it.rarity, s: life.style, age: life.age };
+  gainXP({ common: 5, rare: 10, grail: 25 }[it.rarity]);
+  const cat = CATALOGS[life.style], sk = life.style + ":" + it.rarity;
+  if (cat.filter(c => c.rarity === it.rarity).every(c => save.collection[life.style + ":" + c.name]) && !save.galleryDone[sk]) {
+    save.galleryDone[sk] = 1;
+    const bonus = { common: 100, rare: 200, grail: 400 }[it.rarity];
+    gainXP(bonus);
+    toast(`📖 Set complete: ${RARITY[it.rarity].label} ${STYLE_META[life.style].word} · +${bonus} XP`);
+  }
+  persist();
+  return true;
+}
+
+// ---------- celebration ----------
+function celebrate(res, scene) {
+  return new Promise(resolve => {
+    let big = "🎉", title = "Deal done", sub = res.text || "", rar = "", kv = "", grail = false, isNew = false;
+    const saved = Math.round(res.saved || 0);
+    if (res.kind === "item") {
+      const it = res.item, R = RARITY[it.rarity]; big = styleEmoji(); title = it.name; grail = it.rarity === "grail";
+      isNew = discover(it);
+      sub = it.desc; rar = `<span class="badge" style="--rc:${R.color}">${R.label}</span>${isNew ? `<span class="newtag">NEW IN COLLECTION</span>` : ""}`;
+      kv = `<div class="row"><span>You paid</span><b>${money(res.price)}</b></div><div class="row"><span>Market value</span><b>${money(res.value)}</b></div>` + (res.value > res.price ? `<div class="row"><span>Instant equity</span><b class="pos">+${money(res.value - res.price)}</b></div>` : "") + `<div class="row"><span>Happiness / charm</span><b class="pos">+${R.happy} / +${R.charm}</b></div>` + (res.onCredit ? `<div class="row"><span>Put on credit</span><b class="neg">${money(res.onCredit)}</b></div>` : "");
+    } else if (res.kind === "car") { big = "🚗"; title = life.car.name; sub = life.car.desc; kv = `<div class="row"><span>You paid</span><b>${money(res.price)}</b></div><div class="row"><span>Market value</span><b>${money(res.value)}</b></div>`; }
+    else if (res.kind === "home") { big = "🏠"; title = "You own " + life.home.name; sub = life.home.desc; kv = `<div class="row"><span>Price</span><b>${money(res.price)}</b></div><div class="row"><span>Down payment</span><b>${money(res.down)}</b></div><div class="row"><span>Mortgage</span><b>${money(res.loan)} at ${(res.rate * 100).toFixed(1)}%</b></div><div class="row"><span>Payment</span><b>${money(res.payment / 12)}/mo</b></div>`; }
+    else if (res.kind === "rent") { big = "🗝️"; title = "Lease signed"; sub = life.homeName + ": " + life.homeDesc; kv = `<div class="row"><span>Rent</span><b>${money(res.price)}/mo</b></div>`; }
+    else if (res.kind === "job") { big = "💼"; title = "You got the job"; sub = `${life.job}, starting at ${money(life.salary)} a year.`; }
+    else if (res.kind === "raise") { big = "📈"; title = "Raise approved"; sub = `Your salary is now ${money(life.salary)}.`; }
+    else if (res.kind === "sold") { big = "🏷️"; title = "Sold"; sub = `You walked away with ${money(res.price)}.`; }
+    const g = res.grade, xp = GRADE_XP[g.letter];
+    gainXP(xp);
+    const unit = scene.unit === "mo" ? "mo" : "";
+    const pt = v => priceText({ unit }, Math.round(v));
+    const gx = g.letter === "S" ? "Not a dollar left on the table." : scene.dir === "down" ? `They would have gone as low as <b>${pt(res.floor)}</b>. You left <b>${pt(g.left)}</b> on the table.` : `They would have gone as high as <b>${pt(res.floor)}</b>. You left <b>${pt(g.left)}</b> on the table.`;
+    const gradeBox = `<div class="gradebox"><div class="gl g-${g.letter}">${g.letter}</div><div><div class="gt">${GRADE_TXT[g.letter]}${res.gambleWon ? " · 🎰 gamble paid off" : ""}</div><div class="gx">${gx}</div><div class="rollrow">${esc((res.rolls || []).join(""))}</div></div></div>`;
+    $("cele").className = "cele" + (grail ? " grail" : "") + (g.letter === "S" ? " sgrade" : "");
+    $("cele").innerHTML = `<div class="big">${big}</div><h2>${esc(title)}</h2>${rar}<div class="sub" style="margin-top:6px">${esc(sub)}</div>${saved >= 1 ? `<div class="stamp">${res.kind === "job" || res.kind === "raise" || res.kind === "sold" ? "+" : "SAVED "}${money(saved)}${res.kind === "job" || res.kind === "raise" ? "/yr" : ""}</div>` : ""}${gradeBox}<div class="xpline">+${xp} XP</div>${kv ? `<div class="kv">${kv}</div>` : ""}<button class="btn btn-primary" id="celeOk">Nice!</button>`;
+    openOv("ovCele"); confetti($("cele"), g.letter === "S" ? 34 : grail ? 24 : 14);
+    sfx(g.letter === "S" || g.letter === "A" ? "level" : "coin"); buzz(g.letter === "S" ? [30, 40, 30, 40, 60] : 25);
+    const label = res.kind === "item" ? `bought <b>${esc(res.item.name)}</b> for ${money(res.price)}` : res.kind === "home" ? `bought <b>${esc(life.home.name)}</b> for ${money(res.price)}` : res.kind === "car" ? `bought a <b>${esc(life.car.name)}</b> for ${money(res.price)}` : res.kind === "rent" ? `signed a lease on <b>${esc(life.homeName)}</b> at ${money(res.price)}/mo` : res.kind === "job" ? `started as <b>${esc(life.job)}</b> at ${money(life.salary)}/yr` : res.kind === "raise" ? `negotiated a raise to <b>${money(life.salary)}</b>` : `sold for ${money(res.price)}`;
+    feedItem(`🛍️ You ${label}. <b>Grade ${g.letter}.</b>${saved >= 1 ? ` Negotiated ${money(saved)} in your favor.` : ""}`, g.letter === "D" ? "" : "good");
+    if (life.goal && ((res.kind === "home" && life.goal.cat === "home") || (res.kind === "item" && life.goal.name === res.item.name) || (res.kind === "car" && life.goal.cat === "car"))) { life.goal = null; }
+    $("celeOk").addEventListener("click", () => { closeOv("ovCele"); resolve(); });
+  });
+}
+
+// ---------- age up ----------
+function checkNW() {
+  const nw = netWorth(life); let i = life.flags.nwm || 0;
+  while (i < NW_MILESTONES.length && nw >= NW_MILESTONES[i]) {
+    toast(`💰 ${short(NW_MILESTONES[i])} net worth!`); feedItem(`💰 <b>${short(NW_MILESTONES[i])} net worth.</b> Milestone reached.`, "gold"); gainXP(10); sfx("coin"); i++;
+  }
+  life.flags.nwm = i;
+}
+async function ageUpClick() {
+  if (busy) return;
+  busy = true; setDock(); ensureAudio(); sfx("tick");
+  const out = ageUp(life, rng);
+  feedYear();
+  out.lines.forEach(l => feedItem(esc(l), l.startsWith("⚠") || l.startsWith("📉") ? "bad" : ""));
+  paceItem();
+  renderHead();
+  if (out.ended) { await sleep(300); endLife(out.ended); busy = false; return; }
+  const hot = hotAvailable(life).length;
+  if (hot) feedItem(`🔥 <b>${hot} hot deal${hot > 1 ? "s" : ""}</b> in the Shop this year. Gone when you age up.`, "gold");
+  afterAction();
+  if (out.talent) { life.flags.rerolls = (life.flags.rerolls || 0) + 1; await draftPerks("A talent moment", `Age ${life.age}. Pick one talent to keep for the rest of your life.`); }
+  if (out.event) await presentEvent(out.event);
+  afterAction();
+  persistLife();
+  await flushRankUps();
+  busy = false; setDock();
+}
+function afterAction() {
+  const fresh = checkAchievements(life);
+  fresh.forEach(a => { if (!save.ach[a.id]) gainXP(15); save.ach[a.id] = true; toast(`${a.icon} Achievement: ${a.name}`); feedItem(`${a.icon} <b>Achievement unlocked: ${esc(a.name)}.</b> ${esc(a.desc)}`, "gold"); });
+  const qs = checkQuests(life);
+  qs.forEach(q => { gainXP(q.xp); sfx("win"); toast(`${q.icon} Quest complete: ${q.text} · +${q.xp} XP${q.cash ? " · +" + money(q.cash) : ""}`); feedItem(`${q.icon} <b>Quest complete: ${esc(q.text)}.</b> +${q.xp} XP${q.cash ? `, +${money(q.cash)} cash` : ""}.`, "gold"); });
+  checkNW();
+  if (fresh.length || qs.length) persist();
+  renderHead();
+}
+
+// ---------- sheets ----------
+function openSheet(tab) { sheetTab = tab; renderSheet(); openOv("ovSheet"); }
+function closeSheet() { closeOv("ovSheet"); sheetTab = null; if (life && $("view-game").classList.contains("active")) renderHead(); else renderTitle(); }
+function renderSheet() {
+  const body = $("sheetBody"), keep = body.scrollTop;
+  if (sheetTab === "shop") { $("sheetTitle").textContent = "Shop"; renderShopTab(body); }
+  else if (sheetTab === "assets") { $("sheetTitle").textContent = "Assets"; renderAssetsTab(body); }
+  else if (sheetTab === "career") { $("sheetTitle").textContent = "Career & money"; renderCareerTab(body); }
+  else if (sheetTab === "life") { $("sheetTitle").textContent = "Life"; renderLifeTab(body); }
+  else if (sheetTab === "gallery") { $("sheetTitle").textContent = "Collection"; renderGalleryTab(body); }
+  else if (sheetTab === "trophies") { $("sheetTitle").textContent = "Trophies"; renderTrophyTab(body); }
+  body.scrollTop = keep;
+}
+
+function listingCard(li, body) {
+  const R = li.rarity ? RARITY[li.rarity] : null;
+  const emoji = li.cat === "wardrobe" ? styleEmoji() : li.cat === "home" ? "🏡" : li.cat === "rent" ? "🗝️" : li.cat === "sell" ? "💸" : "🚗";
+  let meta = R ? `<span class="badge" style="--rc:${R.color}">${R.label}</span>` : "";
+  if (li.tag) meta += `<span class="tagpill">${esc(li.tag)}</span>`;
+  if (li.cat === "home") { const pay = annuityEst(li.price); meta = `${li.extra.beds} bd · ${li.extra.baths} ba · about ${money(pay / 12)}/mo mortgage`; }
+  if (li.cat === "rent" && !li.hot) meta = `Per month`;
+  let priceTxt = li.cat === "rent" ? `${money(li.price)}/mo` : money(li.price);
+  if (li.hot && li.market) priceTxt = `${priceTxt}<div style="font-size:11px;font-weight:600;color:var(--faint);text-decoration:line-through;font-family:var(--font-body)">${li.cat === "rent" ? money(li.market) + "/mo" : money(li.market)}</div>`;
+  if (li.kind === "sellhot") { const ref = life.wardrobe.find(i => i.name === li.refName); priceTxt = ref ? `<span style="font-size:13px">worth ${money(ref.value)}</span>` : ""; }
+  const card = el(`<div class="card listing" style="--rc:${R ? R.color : "var(--line)"}"><div class="l-top"><span class="e">${emoji}</span><div class="n"><div class="l-name">${esc(li.name)}</div><div class="l-meta">${meta}</div></div><div class="l-price">${priceTxt}</div></div><div class="l-desc">${esc(li.desc)}</div><div class="l-actions"><button class="btn btn-primary btn-small" data-h>${li.hot ? "Haggle · one shot" : "Haggle"}</button>${li.hot ? "" : `<button class="btn btn-ghost btn-small" data-g>${life.goal && life.goal.name === li.name ? "⭐ Goal set" : "⭐ Set as goal"}</button>`}</div></div>`);
+  card.querySelector("[data-h]").addEventListener("click", async () => {
+    let scene;
+    if (li.hot) {
+      useHot(life, li); persistLife(); renderHead();
+      if (li.kind === "sellhot") {
+        const ref = life.wardrobe.find(i => i.name === li.refName);
+        if (!ref) { renderSheet(); return; }
+        scene = sellScene(life, "wardrobe", ref, rng, { premium: 0.25 });
+      } else scene = purchaseScene(life, li, rng);
+    } else scene = purchaseScene(life, li, rng);
+    await runScene(scene);
+    renderSheet();
+  });
+  const gbtn = card.querySelector("[data-g]");
+  if (gbtn) gbtn.addEventListener("click", () => { life.goal = { cat: li.cat, name: li.name, price: li.price }; persistLife(); renderHead(); renderSheet(); toast("⭐ Goal set. Watch your progress bar."); });
+  body.appendChild(card);
+}
+function renderShopTab(body) {
+  body.innerHTML = "";
+  const hotN = hotAvailable(life).length;
+  const tabs = [["hot", `🔥 Hot${hotN ? " " + hotN : ""}`], ["wardrobe", `${styleEmoji()} ${styleWord()}`], ["home", "🏡 Homes"], ["rent", "🗝️ Rent"], ["car", "🚗 Cars"]];
+  const seg = el(`<div class="seg"></div>`);
+  tabs.forEach(([k, l]) => { const b = document.createElement("button"); b.textContent = l; b.style.fontSize = "11.5px"; if (shopTab === k) b.className = "sel"; b.addEventListener("click", () => { shopTab = k; renderSheet(); }); seg.appendChild(b); });
+  body.appendChild(seg);
+  if (shopTab === "hot") {
+    body.appendChild(el(`<div class="note">🔥 <b>Hot deals vanish when you age up.</b> You only get one shot at each, and walking away burns it.</div>`));
+    const hl = hotAvailable(life);
+    if (!hl.length) body.appendChild(el(`<div class="card note">Nothing hot right now. Age up and check back.</div>`));
+    hl.forEach(li => listingCard(li, body));
+    return;
+  }
+  if (shopTab === "wardrobe") body.appendChild(el(`<div class="note">Closet: <b>${life.wardrobe.length}/${closetCap(life)}</b> pieces. Each piece lifts your happiness and charm. ${life.flags.saleAge === life.age ? "🏷️ Private sale: 10% off this year." : ""}</div>`));
+  if (shopTab === "home" && life.home) { body.appendChild(el(`<div class="card note">You already own <b>${esc(life.home.name)}</b>. One home at a time in this version.</div>`)); return; }
+  if (shopTab === "rent" && life.housing === "own") { body.appendChild(el(`<div class="card note">You own your home, so no need to rent.</div>`)); return; }
+  if (shopTab === "car" && life.car) { body.appendChild(el(`<div class="card note">You already own a <b>${esc(life.car.name)}</b>. Sell it from Assets to shop for a new one.</div>`)); return; }
+  shopListings(life, shopTab).forEach(li => listingCard(li, body));
+}
+function annuityEst(price) { const loan = price * 0.8; const r = clamp(7.4 - (life.credit - 600) / 110, 4.8, 8.2) / 100; return loan * r / (1 - Math.pow(1 + r, -30)); }
+
+function renderAssetsTab(body) {
+  body.innerHTML = "";
+  const eq = life.home ? life.home.value - life.home.loan : 0;
+  body.appendChild(el(`<div class="card"><div class="row"><span>💵 Cash</span><b>${money(life.cash)}</b></div><div class="row"><span>🏦 Retirement account</span><b>${money(life.retirement)}</b></div><div class="row"><span>🏠 Home equity</span><b>${money(eq)}</b></div><div class="row"><span>🚗 Car</span><b>${money(life.car ? life.car.value : 0)}</b></div><div class="row"><span>${styleEmoji()} Collection</span><b>${money(wardrobeValue(life))}</b></div><div class="row"><span>🧾 Debt</span><b class="neg">-${money(life.debt)}</b></div><div class="row" style="border-top:1px solid var(--line);margin-top:4px;padding-top:8px"><span><b>Net worth</b></span><b>${money(netWorth(life))}</b></div></div>`));
+  if (life.home) body.appendChild(el(`<div class="card"><div class="l-name">🏠 ${esc(life.home.name)}</div><div class="l-desc">${esc(life.home.desc)}</div><div class="row"><span>Value</span><b>${money(life.home.value)}</b></div><div class="row"><span>Mortgage left</span><b>${money(life.home.loan)}</b></div><div class="row"><span>Payment</span><b>${money(life.home.payment / 12)}/mo</b></div></div>`));
+  else if (life.housing === "rent") body.appendChild(el(`<div class="card"><div class="l-name">🗝️ ${esc(life.homeName || "Your rental")}</div><div class="l-desc">${esc(life.homeDesc || "")}</div><div class="row"><span>Rent</span><b>${money(life.rent / 12)}/mo</b></div></div>`));
+  else body.appendChild(el(`<div class="card note">You live with family. Rent a place from the Shop when you are ready.</div>`));
+  if (life.car) {
+    const c = el(`<div class="card"><div class="l-name">🚗 ${esc(life.car.name)}</div><div class="l-desc">${esc(life.car.desc)}</div><div class="row"><span>Value</span><b>${money(life.car.value)}</b></div><div class="l-actions"><button class="btn btn-ghost btn-small">Sell it</button></div></div>`);
+    c.querySelector("button").addEventListener("click", async () => { await runScene(sellScene(life, "car", life.car, rng)); renderSheet(); });
+    body.appendChild(c);
+  }
+  body.appendChild(el(`<div class="label">${styleEmoji()} ${styleWord()} collection (${life.wardrobe.length}/${closetCap(life)})</div>`));
+  if (!life.wardrobe.length) body.appendChild(el(`<div class="card note">Your closet is empty. The Shop has pieces waiting.</div>`));
+  life.wardrobe.forEach(it => {
+    const R = RARITY[it.rarity];
+    const c = el(`<div class="card listing" style="--rc:${R.color}"><div class="l-top"><span class="e">${styleEmoji()}</span><div class="n"><div class="l-name">${esc(it.name)}</div><div class="l-meta"><span class="badge" style="--rc:${R.color}">${R.label}</span> ${it.heirloom ? "🏺 heirloom" : "paid " + money(it.paid)}</div></div><div class="l-price">${money(it.value)}</div></div><div class="l-desc">${esc(it.desc)}</div><div class="l-actions"><button class="btn btn-ghost btn-small">Sell</button></div></div>`);
+    c.querySelector("button").addEventListener("click", async () => { await runScene(sellScene(life, "wardrobe", it, rng)); renderSheet(); });
+    body.appendChild(c);
+  });
+}
+
+function renderCareerTab(body) {
+  body.innerHTML = "";
+  if (life.job) {
+    body.appendChild(el(`<div class="card"><div class="l-name">💼 ${esc(life.job)}</div><div class="row"><span>Salary</span><b>${money(life.salary)}/yr</b></div><div class="row"><span>Performance</span><b>${Math.round(life.perf)}/100</b></div><div class="row"><span>Years in role</span><b>${life.yearsInRole}</b></div></div>`));
+    const canRaise = life.age - life.raiseAskAge >= 2;
+    const r = el(`<div class="card"><div class="l-name">Ask for a raise</div><div class="l-desc">${canRaise ? "A strong performance review is the best time. Negotiate with your manager." : `You asked recently. Try again in ${2 - (life.age - life.raiseAskAge)} year(s).`}</div><div class="l-actions"><button class="btn btn-primary btn-small" ${canRaise ? "" : "disabled"}>Negotiate a raise</button></div></div>`);
+    r.querySelector("button").addEventListener("click", async () => { const s = raiseScene(life, rng); await runScene(s); renderSheet(); });
+    body.appendChild(r);
+    const canMove = life.yearsInRole >= 2;
+    const j = el(`<div class="card"><div class="l-name">Look for a new job</div><div class="l-desc">${canMove ? "See what else is out there. You keep your current job unless you accept an offer." : "Stay at least two years in a role first."}</div><div class="l-actions"><button class="btn btn-ghost btn-small" ${canMove ? "" : "disabled"}>Browse offers</button></div></div>`);
+    j.querySelector("button").addEventListener("click", () => { sheetJobs(); });
+    body.appendChild(j);
+  } else body.appendChild(el(`<div class="card note">You are between jobs. Offers will come when you age up.</div>`));
+  const ret = el(`<div class="card"><div class="l-name">🏦 Retirement account</div><div class="row"><span>Balance</span><b>${money(life.retirement)}</b></div><div class="l-desc">${life.contributing ? "You contribute 6% of your salary and your employer adds 3%." : "Not contributing. A match is free money, if your employer offers it."}</div>${life.job ? `<div class="l-actions"><button class="btn btn-ghost btn-small">${life.contributing ? "Stop contributing" : "Contribute 6%"}</button></div>` : ""}</div>`);
+  const rb = ret.querySelector("button"); if (rb) rb.addEventListener("click", () => { life.contributing = !life.contributing; persistLife(); renderSheet(); });
+  body.appendChild(ret);
+  const debt = el(`<div class="card"><div class="l-name">🧾 Debt</div><div class="row"><span>Owed</span><b class="neg">${money(life.debt)}</b></div><div class="row"><span>Credit score</span><b>${Math.round(life.credit)}</b></div><div class="l-desc">Debt grows about 7% a year. Paying it down helps your credit and your mortgage rate.</div><div class="l-actions"></div></div>`);
+  [1000, 5000].forEach(a => { const b = document.createElement("button"); b.className = "btn btn-ghost btn-small"; b.textContent = `Pay ${money(a)}`; b.disabled = life.debt <= 0 || life.cash < Math.min(a, life.debt); b.addEventListener("click", () => { const p = Math.min(a, life.debt); life.cash -= p; life.debt -= p; life.credit = clamp(life.credit + 4, 400, 830); persistLife(); afterAction(); renderSheet(); }); debt.querySelector(".l-actions").appendChild(b); });
+  body.appendChild(debt);
+}
+function sheetJobs() {
+  const jobs = shuffleJobs();
+  const body = $("sheetBody"); body.innerHTML = "";
+  body.appendChild(el(`<div class="card note">Three companies want to talk. Pick one to negotiate, or go back.</div>`));
+  jobs.forEach(j => {
+    const c = el(`<div class="card"><div class="l-name">💼 ${esc(j.title)}</div><div class="l-desc">${esc(j.desc)} Typical pay around ${money(j.salary * life.priceIndex)}.</div><div class="l-actions"><button class="btn btn-primary btn-small">Negotiate</button></div></div>`);
+    c.querySelector("button").addEventListener("click", async () => { const r = await runScene(jobScene(life, j, rng)); if (r && r.ok) life.yearsInRole = 0; renderSheet(); });
+    body.appendChild(c);
+  });
+  const back = el(`<button class="btn btn-ghost">Back</button>`); back.addEventListener("click", renderSheet); body.appendChild(back);
+}
+function shuffleJobs() { const e = eligibleJobs(life); const pool = (e.length >= 3 ? e : JOBS).filter(j => j.title !== life.job).slice(); for (let i = pool.length - 1; i > 0; i--) { const k = Math.floor(rng() * (i + 1)); [pool[i], pool[k]] = [pool[k], pool[i]]; } return pool.slice(0, 3); }
+
+function renderLifeTab(body) {
+  body.innerHTML = "";
+  const p = life.partner;
+  body.appendChild(el(`<div class="card"><div class="l-name">${ARCHETYPES[life.archetype].emoji} ${esc(life.name)}, age ${life.age}</div><div class="row"><span>❤️ Health</span><b>${Math.round(life.stats.health)}</b></div><div class="row"><span>😊 Happiness</span><b>${Math.round(life.stats.happy)}</b></div><div class="row"><span>🧠 Smarts</span><b>${Math.round(life.stats.smarts)}</b></div><div class="row"><span>✨ Charm (with your collection)</span><b>${Math.round(effCharm(life))}</b></div></div>`));
+  body.appendChild(el(`<div class="card"><div class="row"><span>💞 Partner</span><b>${p ? esc(p.name) + (p.married ? " (married)" : p.together ? " (living together)" : " (dating)") : "None"}</b></div><div class="row"><span>👶 Kids</span><b>${life.kids}</b></div><div class="row"><span>🐶 Pet</span><b>${life.pet ? "Yes" : "No"}</b></div></div>`));
+  const gr = life.haggle.grades;
+  body.appendChild(el(`<div class="card"><div class="l-name">🤝 Negotiator level ${life.haggle.level}</div><div class="l-desc">Each level improves your odds in every negotiation.</div><div class="row"><span>Deals negotiated</span><b>${life.haggle.scenes}</b></div><div class="row"><span>Value negotiated in your favor</span><b class="pos">${money(life.haggle.saved)}</b></div><div class="row"><span>Grades</span><b>S ${gr.S} · A ${gr.A} · B ${gr.B} · C ${gr.C} · D ${gr.D}</b></div><div class="row"><span>Best combo</span><b>🔥 x${life.haggle.maxCombo}</b></div></div>`));
+  body.appendChild(el(`<div class="label">Talents (${life.perks.length})</div>`));
+  if (!life.perks.length) body.appendChild(el(`<div class="card note">No talents yet.</div>`));
+  life.perks.forEach(id => { const pk = perkById(id), R = PERK_RAR[pk.rar]; body.appendChild(el(`<div class="card listing" style="--rc:${R.color}"><div class="l-top"><span class="e">${pk.icon}</span><div class="n"><div class="l-name">${esc(pk.name)}</div><div class="l-meta" style="color:${R.color};font-weight:700">${R.label}</div></div></div><div class="l-desc" style="margin-bottom:0">${esc(pk.desc)}</div></div>`)); });
+  body.appendChild(el(`<div class="label">Quests</div>`));
+  const qc = el(`<div class="card"></div>`);
+  activeQuests(life).forEach(q => { const pc = q.pct(life); qc.appendChild(el(`<div class="qrow"><span class="qi">${q.icon}</span><div class="qx"><div>${esc(q.text)}</div><div class="qp"><i style="width:${pc * 100}%"></i></div></div><span class="rw">+${q.xp} XP${q.cash ? "<br>+" + money(q.cash) : ""}</span></div>`)); });
+  qc.appendChild(el(`<div class="note" style="margin-top:4px">${Object.keys(life.quests).length} completed this life. New quests appear as you finish them.</div>`));
+  body.appendChild(qc);
+  body.appendChild(el(`<div class="label">Achievements (${Object.keys(life.achievements).length}/${ACHIEVEMENTS.length})</div>`));
+  const g = el(`<div class="grid2"></div>`);
+  ACHIEVEMENTS.forEach(a => g.appendChild(el(`<div class="ach ${life.achievements[a.id] ? "" : "lock"}"><span class="ic">${a.icon}</span><div><b>${esc(a.name)}</b><div class="d">${esc(a.desc)}</div></div></div>`)));
+  body.appendChild(g);
+  const st = el(`<div class="card toggle"><span>Sound and haptics</span><button class="btn btn-ghost btn-small" id="sndTgl">${save.sound ? "On" : "Off"}</button></div>`);
+  st.querySelector("button").addEventListener("click", toggleSound);
+  body.appendChild(st);
+}
+
+function renderGalleryTab(body) {
+  body.innerHTML = "";
+  const rk = rank();
+  const seg = el(`<div class="seg"></div>`);
+  Object.keys(STYLE_META).forEach(k => {
+    const m = STYLE_META[k], b = document.createElement("button");
+    b.textContent = `${m.emoji} ${m.word}`; if (galStyle === k) b.className = "sel";
+    b.addEventListener("click", () => { galStyle = k; renderSheet(); });
+    seg.appendChild(b);
+  });
+  body.appendChild(seg);
+  const m = STYLE_META[galStyle], cat = CATALOGS[galStyle];
+  if (m.minRank > rk) { body.appendChild(el(`<div class="card note">🔒 Reach <b>Rank ${m.minRank}</b> to start collecting ${m.word}.</div>`)); return; }
+  const have = cat.filter(c => save.collection[galStyle + ":" + c.name]).length;
+  body.appendChild(el(`<div class="note"><b>${have}/${cat.length}</b> discovered. Finish a whole rarity to earn a bonus: <b>+100 / +200 / +400 XP</b> for Common / Rare / Grail sets. Pieces turn up in the Shop and in hot deals, and each life brings different ones.</div>`));
+  ["common", "rare", "grail"].forEach(r => {
+    const items = cat.filter(c => c.rarity === r), R = RARITY[r], n = items.filter(c => save.collection[galStyle + ":" + c.name]).length;
+    const done = save.galleryDone[galStyle + ":" + r];
+    body.appendChild(el(`<div class="gh"><span class="t" style="color:${R.color}">${R.label}${done ? " ✓ set complete" : ""}</span><span class="c">${n}/${items.length}</span></div>`));
+    const grid = el(`<div class="gal"></div>`);
+    items.forEach(c => {
+      const got = save.collection[galStyle + ":" + c.name];
+      grid.appendChild(el(`<div class="gi ${got ? "" : "miss"}" style="--rc:${R.color}"><span class="ge">${m.emoji}</span>${got ? `<b>${esc(c.name)}</b>` : `<b>???</b><span class="sm">Not found yet</span>`}</div>`));
+    });
+    body.appendChild(grid);
+  });
+}
+function renderTrophyTab(body) {
+  body.innerHTML = "";
+  body.appendChild(el(`<div class="note">Trophies you have earned across every life. <b>${Object.keys(save.ach).length}/${ACHIEVEMENTS.length}</b></div>`));
+  const g = el(`<div class="grid2"></div>`);
+  ACHIEVEMENTS.forEach(a => g.appendChild(el(`<div class="ach ${save.ach[a.id] ? "" : "lock"}"><span class="ic">${a.icon}</span><div><b>${esc(a.name)}</b><div class="d">${esc(a.desc)}</div></div></div>`)));
+  body.appendChild(g);
+}
+
+// ---------- ending ----------
+function lifeShare(sc, retired, headline) {
+  const g = life.haggle.grades, b = life.haggle.best;
+  return `Life Deal · ${life.name} ${retired ? "retired at" : "passed away at"} ${life.age}\n"${headline}"\nTier ${sc.tier} · ${sc.total} pts · net worth ${short(netWorth(life))}\nGrades: S${g.S} A${g.A} B${g.B} · best combo x${life.haggle.maxCombo}${b ? `\nBest deal: ${b.name} (${b.letter}), ${short(b.saved)} in my favor` : ""}\nCan you beat it?`;
+}
+function endLife(kind) {
+  const sc = finalScore(life);
+  const retired = kind === "retire";
+  const isBest = sc.total > save.best;
+  if (isBest) { save.best = sc.total; save.bestCurve = Object.assign({}, life.curve); }
+  save.life = null;
+  const headline = lifeHeadline(life);
+  const xp = Math.round(sc.total / 12) + (retired ? 30 : 0);
+  gainXP(xp);
+  persist();
+  const heir = makeHeir(life);
+  lastEnd = { name: life.name, heir };
+  $("endKicker").textContent = retired ? `${life.name} retires at ${life.age}` : `${life.name} passed away at ${life.age}`;
+  $("endTier").textContent = sc.tier;
+  $("endHead").textContent = `"${headline}"`;
+  $("endCard").innerHTML = `<div class="row"><span>Final score</span><b>${sc.total}</b></div><div class="row"><span>Net worth</span><b>${money(netWorth(life))}</b></div><div class="row"><span>Happiness</span><b>${Math.round(life.stats.happy)}</b></div><div class="row"><span>Achievements</span><b>${Object.keys(life.achievements).length}/${ACHIEVEMENTS.length}</b></div>${isBest ? `<div class="note" style="margin-top:6px">🏆 Your best life yet. It is now the ghost you race next time.</div>` : `<div class="note" style="margin-top:6px">Best life: ${save.best}. You were ${save.best - sc.total} points short.</div>`}`;
+  const rk = rank(), cur = rankXP(rk), nxt = rankXP(rk + 1), pct = rk >= 12 ? 100 : Math.round(clamp((save.xp - cur) / (nxt - cur), 0, 1) * 100), un = nextUnlock(rk);
+  $("endXP").innerHTML = `<div class="row"><span>XP earned this life</span><b class="pos">+${xp}</b></div><div class="row"><span>Rank</span><b>${rk} · ${esc(RANK_TITLES[rk - 1])}</b></div><div class="xpbar"><i style="width:${pct}%"></i></div>${un ? `<div class="note" style="margin-top:6px">🔒 Rank ${un.rank} unlocks: ${esc(un.text)}</div>` : ""}`;
+  $("endParts").innerHTML = `<div class="label" style="margin-bottom:6px">Score breakdown</div>` + sc.parts.map(p => `<div class="row"><span>${p.label}</span><b>${p.pts}</b></div>`).join("");
+  const stuff = [];
+  if (life.home) stuff.push(`🏠 ${esc(life.home.name)} (${money(life.home.value)})`);
+  if (life.car) stuff.push(`🚗 ${esc(life.car.name)}`);
+  life.wardrobe.forEach(i => stuff.push(`${styleEmoji()} ${esc(i.name)} · ${RARITY[i.rarity].label}`));
+  $("endStuff").innerHTML = `<div class="label" style="margin-bottom:6px">What you own</div>` + (stuff.length ? stuff.map(s => `<div class="row"><span>${s}</span></div>`).join("") : `<div class="note">Not much, but a lot of memories.</div>`);
+  $("heirBtn").innerHTML = `Play as ${esc(life.name.replace(/ Jr\.$/, "").slice(0, 10))} Jr.<br><span style="font-size:12px;font-weight:600;opacity:0.9">+${money(heir.cash)} head start${heir.heirloom ? ` and the ${esc(heir.heirloom.name)}` : ""}</span>`;
+  lastEnd.text = lifeShare(sc, retired, headline);
+  showView("view-end");
+  sfx(sc.tier === "S" || sc.tier === "A" ? "level" : "coin");
+  flushRankUps();
+}
+
+// ---------- events wiring ----------
+$("startBtn").addEventListener("click", () => startLife(null));
+$("continueBtn").addEventListener("click", continueLife);
+$("againBtn").addEventListener("click", () => { $("nameInput").value = ""; renderTitle(); showView("view-title"); });
+$("heirBtn").addEventListener("click", () => { if (lastEnd) startLife(lastEnd.heir); });
+$("shareBtn").addEventListener("click", () => { if (lastEnd) shareText(lastEnd.text); });
+$("dAge").addEventListener("click", ageUpClick);
+$("dShop").addEventListener("click", () => { if (busy) return; if (hotAvailable(life).length && life.flags.hotSeen !== life.age) { shopTab = "hot"; life.flags.hotSeen = life.age; } openSheet("shop"); });
+$("dAssets").addEventListener("click", () => { if (!busy) openSheet("assets"); });
+$("dCareer").addEventListener("click", () => { if (!busy) openSheet("career"); });
+$("dLife").addEventListener("click", () => { if (!busy) openSheet("life"); });
+$("questStrip").addEventListener("click", () => { if (!busy) openSheet("life"); });
+$("sheetClose").addEventListener("click", closeSheet);
+$("soundBtn").addEventListener("click", toggleSound);
+$("galleryBtn").addEventListener("click", () => openSheet("gallery"));
+$("trophyBtn").addEventListener("click", () => openSheet("trophies"));
+
+window.__life = { get life() { return life; }, get save() { return save; }, get busy() { return busy; }, get scene() { return sceneCtx && sceneCtx.scene; }, get lastEnd() { return lastEnd; }, rank };
+renderTitle();
+})();
+</script>
+</body>
+</html>
